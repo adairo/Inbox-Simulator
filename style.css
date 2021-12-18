@@ -1,0 +1,82 @@
+/* Initial configuration */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #008069;
+    --screen-width: 360px;
+    --screen-height: 640px;
+}
+
+html {
+    font-size: 10px;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Sizes, layout and colors*/
+
+.screen-container {
+    position: relative;
+    width: var(--screen-width);
+    height: var(--screen-height);
+    background-color: antiquewhite;
+}
+
+.notification-bar {
+    display: flex;
+    align-items: center;
+    color: white;
+    width: 100%;
+    height: 3%;
+    background-color: black;
+}
+
+.application-header {
+    width: 100%;
+    height: 7%;
+    padding-left: 1%;
+    background-color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    
+}
+
+.message-bar {
+    background-color: white;
+    width: 85%;
+    padding: 0.7rem;
+    border-radius: 2rem;
+}
+
+ .bottom-app-section {
+     position: absolute;
+     display: flex;
+     width: 100%;
+     align-items: center;
+     justify-content: space-around;
+     bottom: 1.4%;
+ }
+
+/* Styles, icons and more */
+
+.receiver-photo-profile {
+    width: 8.3%;
+    height: auto;
+    background-color: #aaa;
+    border-radius: 50%;
+    margin-left: 0rem;
+    margin-right: 0.7rem;
+}
+
+.receiver-name {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    flex-grow: 1;
+}
+
+.icon-option {
+    margin: 0.7rem;
+}

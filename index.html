@@ -5,41 +5,57 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <title>Whatsapp Simulator</title>
+
 </head>
 
 <body>
   <div class="screen-container">
-    <nav class="notification-bar">
-      <div class="notification-icons">
 
-      </div>
-      <div class="notification-icons status-icons">
-      </div>
-    </nav>
-    <header class="application-header">
-      <div class="receiver-info">
-        <img src="" alt="" class="receiver-photo-profile">
-        <p class="receiver-name">Ana Karen</p>
-      </div>
+    <div class="notification-bar">
+      <p class="clock">7:50</p>
+      <div class="notification-icons"></div>
+      <div class="notification-icons status-icons"></div>
+    </div>
+
+    <div class="application-header">
+      <img src="resources/icons/arrow_back_white_24dp.svg" class='back-button'>
+      <img class="receiver-photo-profile" src="http://unsplash.it/50/50?grativiy-center">
+      
+      <p class="receiver-name">Ana Karen</p>
+      
       <div class="options-icons">
+        <img src="resources/icons/videocam_white_24dp.svg" class='icon-option' alt="">
+        <img src="resources/icons/call_white_24dp.svg" class='icon-option'alt="">
+        <img src="resources/icons/more_vert_white_24dp.svg" class='icon-option'alt="">
 
       </div>
-    </header>
-    <main class="main-chat-screen">
-      <p class="date"></p>
-      <p class="security-info"></p>
-      <div class="message-bar">
-        <div class="message-bar-icon emojis-icon"></div>
-        <input type="text" class="message-input" placeholder='Message'>
-        <div class="message-bar-icon"></div>
-        <div class="message-bar-icon"></div>
+    </div>
+
+    <div class="main-app-section">
+      <div class="chat-section">
+        <p class="date"></p>
+        <p class="security-info"></p>
       </div>
-      <button class="record-audio"></button>
-      <nav class="navigation-bar">
-        <!-- depends of the interface and android version -->
-      </nav>
-    </main>
+      <div class="bottom-app-section">
+        <div class="message-bar">
+          <div class="message-bar-icon emojis-icon"></div>
+          <input type="text" class="message-input" placeholder='Message'>
+          <div class="message-bar-icon"></div>
+          <div class="message-bar-icon"></div>
+        </div>
+        <button class="record-audio"></button>
+      </div>
+    </div>
+
+    <!-- depends on the interface and android version -->
+    <div class="navigation-bar"></div>
+
   </div>
 </body>
+
 </html>
