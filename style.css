@@ -30,13 +30,10 @@ html {
 }
 
 .notification-bar {
-    
-    display: flex;
-    align-items: center;
     color: white;
     width: 100%;
-    height: 2.9%;
-    background-color: black;
+    height: 2.93%;
+    background-color: var(--primary-color, black);
 }
 
 .application-header {
@@ -98,6 +95,51 @@ html {
 
 
 /* Styles, icons and more */
+
+.notification-bar {
+ font-size: calc(var(--screen-width) * 0.035);
+ font-weight: bold;
+ padding: 1.2%;
+}
+
+.notification-icons {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.4%;
+}
+
+.notification-icon, 
+.notification-icon img {
+    height: 120%;
+}
+
+.notification-icon img {
+    width: calc(var(--screen-height) * 0.023);
+}
+
+.notification-icon {
+    margin-right: 6%;
+}
+
+.notification-icon-group {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#battery-graph {
+    height: 115%;
+}
+
+#battery-percentaje {
+    margin-left: -3%;
+    /* font-size: 0.96em; */
+}
+
+/* Application header */
 
 .back-button {
     min-width: 5.4%;
