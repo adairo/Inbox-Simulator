@@ -17,21 +17,33 @@
   <div class="screen-container">
 
     <div class="notification-bar">
-      <p class="clock">7:50</p>
-      <div class="notification-icons"></div>
-      <div class="notification-icons status-icons"></div>
+      <!-- It could be better to later add a notification-icons container for better styling -->
+      <div class="notification-icons">
+        <div class="clock notification-icon">7:50</div>
+        <div class="notification-icon-group">
+          <div class="notification-icon"><img src="resources/icons/alarm_white_24dp.svg" alt=""></div>
+          <div class="notification-icon"><img src="resources/icons/signal_cellular_alt_white_24dp.svg"></div>
+          <div class="notification-icon-group notification-icon">
+            <div class="notification-icon"><img id='battery-graph' src="resources/icons/battery_full_white_24dp.svg"
+                alt=""></div>
+            <div id="battery-percentaje" class="notification-icon">75<span>%</span> </div>
+          </div>
+          
+        </div>
+
+      </div>
     </div>
 
     <div class="application-header">
       <img src="resources/icons/arrow_back_white_24dp.svg" class='back-button'>
       <img class="receiver-photo-profile" src="http://unsplash.it/50/50?grativiy-center">
-      
+
       <p class="receiver-name">Ana Karen</p>
-      
+
       <div class="options-icons">
         <img src="resources/icons/videocam_white_24dp.svg" class='icon-option' alt="">
-        <img src="resources/icons/call_white_24dp.svg" class='icon-option'alt="">
-        <img src="resources/icons/more_vert_white_24dp.svg" class='icon-option'alt="">
+        <img src="resources/icons/call_white_24dp.svg" class='icon-option' alt="">
+        <img src="resources/icons/more_vert_white_24dp.svg" class='icon-option' alt="">
 
       </div>
     </div>
@@ -40,7 +52,7 @@
       <p class="date"></p>
       <p class="security-info"></p>
     </div>
-    
+
     <div class="bottom-app-section">
       <div class="message-bar">
         <div class="message-bar-icon emojis-icon"></div>
@@ -52,7 +64,7 @@
         <img src="/resources/icons/mic_white_24dp.svg">
       </button>
     </div>
-    
+
 
     <!-- depends on the interface and android version -->
     <div class="navigation-bar"></div>
