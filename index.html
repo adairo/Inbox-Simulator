@@ -55,10 +55,21 @@
 
     <div class="bottom-app-section">
       <div class="message-bar">
-        <div class="message-bar-icon emojis-icon"></div>
-        <input type="text" class="message-input" placeholder='Message'>
-        <div class="message-bar-icon"></div>
-        <div class="message-bar-icon"></div>
+
+        <div class="message-bar-icon">
+          <img src="resources/icons/emoji_emotions_white_24dp.svg" class="icon emoji-icon">
+        </div>
+
+        <!-- <input type="text" class="message-input" placeholder='Message'> -->
+        <textarea name="" class="message-input" placeholder="Message" rows="1" wrap="hard"></textarea>
+
+        <div class="message-bar-icon">
+          <img src="resources/icons/attach_file_white_24dp.svg" class="icon attach-icon">
+        </div>
+
+        <div class="message-bar-icon">
+          <img src="resources/icons/photo_camera_white_24dp.svg" class="icon photo-icon">
+        </div>
       </div>
       <button class="record-audio-button">
         <img src="/resources/icons/mic_white_24dp.svg">
