@@ -9,8 +9,8 @@
     --screen-width: 1080px;
     --screen-height: 2340px;
 
-    /* --screen-width: 360px;
-    --screen-height: 640px; */
+    /* --screen-width: 720px;
+    --screen-height: 1280px; */
 }
 
 html {
@@ -19,6 +19,10 @@ html {
 }
 
 /* Sizes, layout and colors*/
+
+body {
+    background-color: rgb(189, 189, 189);
+}
 
 .screen-container {
     position: relative;
@@ -32,17 +36,18 @@ html {
 .notification-bar {
     color: white;
     width: 100%;
-    height: 2.93%;
+    height: 3.59%;
     background-color: var(--primary-color, black);
 }
 
 .application-header {
     width: 100%;
-    height: 7%;
+    height: 5.76%;
     padding-left: 1%;
     background-color: var(--primary-color);
     display: flex;
-    align-items: center;   
+    align-items: center;  
+    justify-content: space-between; 
 }
 
 
@@ -58,7 +63,7 @@ html {
 
 .bottom-app-section {
 
-    height: 4.74%;
+    height: 4.75%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -86,7 +91,23 @@ html {
     border-radius: 50%;
     border: none;
     background-color: #008069;
+}
 
+.navigation-bar {
+    width: 100%;
+    height: 1.6%;
+    background-color: #f7f8fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-button {
+    width: 20%;
+    height: 10%;
+    background-color: #636364be;
+    border-radius: 1rem;
+    
 }
 
 
@@ -95,29 +116,23 @@ html {
 .notification-bar {
  font-size: calc(var(--screen-width) * 0.035);
  font-weight: bold;
- padding: 1.2%;
+ /* padding: 1.9% 5.83%; */
+ padding: 0 5.83%;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
 }
 
-.notification-icons {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2.4%;
-}
-
-.notification-icon, 
-.notification-icon img {
-    height: 120%;
-}
-
-.notification-icon img {
-    width: calc(var(--screen-height) * 0.023);
-}
 
 .notification-icon {
-    margin-right: 6%;
+ height: 50%;
+ margin-right: 3%;
 }
+
+.notification-icon:last-child {
+    margin-right: 0;
+}
+
 
 .notification-icon-group {
     height: 100%;
@@ -126,23 +141,18 @@ html {
     align-items: center;
 }
 
-#battery-graph {
-    height: 115%;
-}
-
-#battery-percentaje {
-    margin-left: -3%;
-    /* font-size: 0.96em; */
-}
-
 /* Application header */
 
+.application-header {
+    padding: 0 2.7% 0 1%;
+}
+
 .back-button {
-    min-width: 5.4%;
+    height: 50%;
 }
 
 .receiver-photo-profile {
-    width: 8.5%;
+    width: 11%;
     height: auto;
     background-color: #aaa;
     border-radius: 50%;
@@ -150,17 +160,51 @@ html {
     margin-right: 2%;
 }
 
+.receiver-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+}
+
 .receiver-name {
     color: white;
     font-size: calc(var(--screen-width) * 0.04);
     font-weight: 600;
+    line-height: normal;
+    
+}
+
+.receiver-status {
+    margin-top: -0.7%;
+    color: white;
+    font-size: calc(var(--screen-width) * 0.03);
+}
+
+.header-group {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.header-group:first-child {
+    height: 100%;
+    flex-direction: row;
     flex-grow: 1;
 }
 
-
+.header-group:last-child {
+    height: 50%;
+}
 .icon-option {
-    width: calc(var(--screen-width) * 0.069);
+    /* width: calc(var(--screen-width) * 0.069); */
+    height: 100%;
+    width: auto;
     margin: 0 calc(var(--screen-width) * 0.017);
+}
+
+.icon-option:last-child {
+    margin: 0;
 }
 
 /* Bottom-section */
@@ -206,11 +250,16 @@ html {
 
 .record-audio-button {
     padding: 2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .record-audio-button .icon {
     height: 100%;
     width: auto;
 }
+
+
 
 

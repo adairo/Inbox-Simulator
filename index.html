@@ -17,36 +17,40 @@
   <div class="screen-container">
 
     <div class="notification-bar">
-      <!-- It could be better to later add a notification-icons container for better styling -->
-      <div class="notification-icons">
-        <div class="clock notification-icon">7:50</div>
-        <div class="notification-icon-group">
-          <div class="notification-icon"><img src="resources/icons/alarm_white_24dp.svg" alt=""></div>
-          <div class="notification-icon"><img src="resources/icons/signal_cellular_alt_white_24dp.svg"></div>
-          <div class="notification-icon-group notification-icon">
-            <div class="notification-icon"><img id='battery-graph' src="resources/icons/battery_full_white_24dp.svg"
-                alt=""></div>
-            <div id="battery-percentaje" class="notification-icon">75<span>%</span> </div>
-          </div>
-          
-        </div>
-
+      <div class="notification-icon-group">
+        <span class="clock notification-icon">7:50</span>
+      </div>
+      
+      <div class="notification-icon-group">
+        <img src="resources/icons/alarm_white_24dp.svg" class="notification-icon">
+        <img src="resources/icons/signal_wifi_statusbar_4_bar_white_24dp.svg" class="notification-icon">
+        <img src="resources/icons/signal_cellular_4_bar_white_24dp.svg" class="notification-icon">
+        <img src="resources/icons/battery_full_white_24dp.svg" class="notification-icon">
+        <span class="notification-icon">75%</span>
+        
       </div>
     </div>
 
     <div class="application-header">
-      <img src="resources/icons/arrow_back_white_24dp.svg" class='back-button'>
-      <img class="receiver-photo-profile" src="http://unsplash.it/50/50?grativiy-center">
 
-      <p class="receiver-name">Ana Karen</p>
+      <div class="header-group">
+        <img src="resources/icons/arrow_back_white_24dp.svg" class='back-button'>
+        <img class="receiver-photo-profile" src="http://unsplash.it/50/50?grativiy-center">
+        <div class="receiver-info">
+          <span class="receiver-name">Ana Karen &lt;3 </span>
+          <span class="receiver-status">online</span>
+        </div>
+      </div>
 
-      <div class="options-icons">
+
+
+      <div class="header-group">
         <img src="resources/icons/videocam_white_24dp.svg" class='icon-option' alt="">
         <img src="resources/icons/call_white_24dp.svg" class='icon-option' alt="">
         <img src="resources/icons/more_vert_white_24dp.svg" class='icon-option' alt="">
-
       </div>
     </div>
+
 
     <div class="chat-section">
       <p class="date"></p>
@@ -55,21 +59,18 @@
 
     <div class="bottom-app-section">
       <div class="message-bar">
-
-        
-          <img src="resources/icons/emoji_emotions_white_24dp.svg" class="message-bar-icon">
-        
+        <img src="resources/icons/emoji_emotions_white_24dp.svg" class="message-bar-icon">
 
         <!-- <input type="text" class="message-input" placeholder='Message'> -->
         <textarea name="" class="message-input" placeholder="Message" rows="1" wrap="hard"></textarea>
 
-        
-          <img src="resources/icons/attach_file_white_24dp.svg" class="message-bar-icon">
-        
 
-        
-          <img src="resources/icons/photo_camera_white_24dp.svg" class="message-bar-icon">
-        
+        <img src="resources/icons/attach_file_white_24dp.svg" class="message-bar-icon">
+
+
+
+        <img src="resources/icons/photo_camera_white_24dp.svg" class="message-bar-icon">
+
       </div>
       <button class="record-audio-button">
         <img src="/resources/icons/mic_white_24dp.svg" class='icon'>
@@ -78,7 +79,9 @@
 
 
     <!-- depends on the interface and android version -->
-    <div class="navigation-bar"></div>
+    <div class="navigation-bar">
+      <div class="nav-button"></div>
+    </div>
 
   </div>
 </body>
