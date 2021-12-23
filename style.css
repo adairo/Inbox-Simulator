@@ -37,7 +37,7 @@ body {
 .notification-bar {
     color: white;
     width: 100%;
-    height: 3.59%;
+    height: 4.1%;
     background-color: var(--primary-color, black);
 }
 
@@ -115,24 +115,24 @@ body {
 /* Styles, icons and more */
 
 .notification-bar {
- font-size: calc(var(--screen-width) * 0.035);
  font-weight: bold;
+ font-size: 1.05em;
  /* padding: 1.9% 5.83%; */
  padding: 0 5.83%;
  display: flex;
- align-items: center;
  justify-content: space-between;
+ align-items: center;
 }
 
-
 .notification-icon {
- height: 50%;
- margin-right: 3%;
+    font-size: 0.9em;
+    margin-right: 0.13em;
 }
 
 .notification-icon:last-child {
     margin-right: 0;
 }
+
 
 
 .notification-icon-group {
