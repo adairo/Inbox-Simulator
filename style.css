@@ -18,6 +18,26 @@ html {
     font-family: 'Roboto', sans-serif;
 }
 
+.material-icons-outlined,
+.material-icons.material-icons--outlined {
+  font-family: 'Material Icons Outlined';
+}
+
+.material-icons-two-tone,
+.material-icons.material-icons--two-tone {
+  font-family: 'Material Icons Two Tone';
+}
+
+.material-icons-round,
+.material-icons.material-icons--round {
+  font-family: 'Material Icons Round';
+}
+
+.material-icons-sharp,
+.material-icons.material-icons--sharp {
+  font-family: 'Material Icons Sharp';
+}
+
 /* Sizes, layout and colors*/
 
 body {
@@ -43,7 +63,7 @@ body {
 
 .application-header {
     width: 100%;
-    height: 5.76%;
+    height: 6.62%;
     padding-left: 1%;
     background-color: var(--primary-color);
     display: flex;
@@ -64,12 +84,12 @@ body {
 
 .bottom-app-section {
 
-    height: 4.75%;
+    height: 5.38%;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 2%;
-    padding: 0 1.4%;
+    padding: 0 0.9%;
     
 }
 
@@ -81,12 +101,15 @@ body {
 }
 
 .message-input {
-    height: 100%;
+    /* line-height: 100%; */
+    padding-top: 3%;
+    margin: 0;
+    overflow-y: auto;
 }
 
 .record-audio-button {
     height: 100%;
-    width: calc(var(--screen-height) * 0.0476);
+    width: calc(var(--screen-height) * 0.0538);
     flex-shrink: 0;
     margin-left: 1.4%;
     border-radius: 50%;
@@ -145,16 +168,16 @@ body {
 /* Application header */
 
 .application-header {
-    padding: 0 2.7% 0 1%;
+    padding: 0 2.7% 0 1.1%;
 }
 
 .back-button {
-    height: 50%;
+    height: 45%;
 }
 
 .receiver-photo-profile {
-    width: 11%;
-    height: auto;
+    height: 63.22%;
+    width: auto;
     background-color: #aaa;
     border-radius: 50%;
     margin-left: 0rem;
@@ -170,7 +193,7 @@ body {
 
 .receiver-name {
     color: white;
-    font-size: calc(var(--screen-width) * 0.04);
+    font-size: 1.14em;
     font-weight: 600;
     line-height: normal;
     
@@ -179,7 +202,7 @@ body {
 .receiver-status {
     margin-top: -0.7%;
     color: white;
-    font-size: calc(var(--screen-width) * 0.03);
+    font-size: 0.95em;
 }
 
 .header-group {
@@ -195,8 +218,9 @@ body {
 }
 
 .header-group:last-child {
-    height: 50%;
+    height: 48%;
 }
+
 .icon-option {
     /* width: calc(var(--screen-width) * 0.069); */
     height: 100%;
@@ -284,12 +308,6 @@ body {
 }
 
 
-
-
-
-
-
-
 /* Bottom-section */
 
 .message-bar {
@@ -297,14 +315,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 2.24% 2.6%;
+    padding: 0 2.6%;
     flex-grow: 1;
     border-bottom: 2px solid #bebebe;
 }
 
 .message-input {
-    
-    font-size: calc(var(--screen-width) * 0.04);
+    /* display: none; */
+    font-size: 1.1em;
     font-family: inherit;
     flex-grow: 1;
     outline: none;
@@ -314,7 +332,7 @@ body {
 }
 
 .message-bar-icon {
-    height: 97%;
+    height: 60%;
     width: auto;
 }
 
