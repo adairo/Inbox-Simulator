@@ -148,7 +148,7 @@ body {
 /* Application header */
 
 .application-header {
-    padding: 0 2.7% 0 1.1%;
+    padding: 0 2.2% 0 1.1%;
 }
 
 .back-button {
@@ -205,7 +205,7 @@ body {
     /* width: calc(var(--screen-width) * 0.069); */
     height: 100%;
     width: auto;
-    margin: 0 calc(var(--screen-width) * 0.017);
+    margin: 0 calc(var(--screen-width) * 0.028);
 }
 
 .icon-option:last-child {
@@ -244,6 +244,17 @@ body {
     border-radius: 0.6em;
 }
 
+.message-text {
+    font-size: inherit;
+    font-family: inherit;
+    max-width: 100%;
+    resize: none;
+    background: none;
+    border: 0;
+    overflow: hidden;
+
+}
+
 .message-self + .message-receiver {
     /* Spacing between messages from diferent sources */
     margin-top: 0.5em;
@@ -253,14 +264,23 @@ body {
     margin-top: 0.5em;
 }
 
-.message::before {
+.data-time {
+    color: #667781;
+    font-size: 0.7em;
+    float: right;
+    position: relative;
+    bottom: -1em;
+    right: -0.7em;
+}
+
+/* .message::before {
     content: attr(data-time);
     color: #667781;
     font-size: 0.7em;
     position: absolute;
     bottom: 0.2em;
     right: 0.8em;
-}
+} */
 
 .message.message-self {
     background-color: #e7ffdb;
