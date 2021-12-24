@@ -303,7 +303,7 @@ body {
 .message:nth-child(2)::after { /* first message*/
     /* Triangle pointing to user side */
     content: "";
-    border: 0.42em solid transparent;
+    border: 0.4em solid transparent;
     position: absolute;
 }
 
