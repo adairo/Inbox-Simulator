@@ -18,26 +18,6 @@ html {
     font-family: 'Roboto', sans-serif;
 }
 
-.material-icons-outlined,
-.material-icons.material-icons--outlined {
-  font-family: 'Material Icons Outlined';
-}
-
-.material-icons-two-tone,
-.material-icons.material-icons--two-tone {
-  font-family: 'Material Icons Two Tone';
-}
-
-.material-icons-round,
-.material-icons.material-icons--round {
-  font-family: 'Material Icons Round';
-}
-
-.material-icons-sharp,
-.material-icons.material-icons--sharp {
-  font-family: 'Material Icons Sharp';
-}
-
 /* Sizes, layout and colors*/
 
 body {
@@ -135,6 +115,8 @@ body {
 }
 
 
+
+/* ------------------------ */
 /* Styles, icons and more */
 
 .notification-bar {
@@ -155,8 +137,6 @@ body {
 .notification-icon:last-child {
     margin-right: 0;
 }
-
-
 
 .notification-icon-group {
     height: 100%;
@@ -244,7 +224,7 @@ body {
 
 .date {
     font-size: 0.917em;
-    font-weight: 400;
+    font-weight: 500;
     color: #54656f;
     background-color: #f3f3f2de;
     border-bottom: 1px solid #b1b1b1 ;
@@ -255,12 +235,13 @@ body {
 
 .message {
     font-size: 1.11em;
+    font-weight: 400;
     max-width: 83%;
     margin: 0.07em 0;
     padding: 2% 4% 2% 2%;
     text-align: left; 
     position: relative;
-    border-radius: 0.7em;
+    border-radius: 0.6em;
 }
 
 .message-self + .message-receiver {
@@ -294,43 +275,49 @@ body {
     
 }
 
+/* General ::after */
 .message-self + .message-receiver::after,
-.message-receiver + .message-self::after{
+.message-receiver + .message-self::after,
+.message-self + .date + .message-receiver::after,
+.message-receiver + .date + .message-self::after,
+.message:nth-child(2)::after { /* first message*/
     /* Triangle pointing to user side */
     content: "";
-    border: 0.6em solid transparent;
+    border: 0.42em solid transparent;
     position: absolute;
 }
 
-.message-self + .message-receiver {
-    /* Rect border on first message from different source */
+/* Rect border for message-receiver */
+.message-self + .message-receiver, /* first message-receiver after message-self*/
+.message-self + .date + .message-receiver, /* first message-receiver when there is a .date between */
+.message-receiver:nth-child(2) { /* first message */
     border-radius: 0 0.7em 0.7em 0.7em;
 }
 
-.message-receiver + .message-self {
-    /* Rect border on first message from different source */
+/* Rect border for message-self */
+.message-receiver + .message-self, /* first message-self after message-self*/
+.message-receiver + .date + .message-self, /* first message-self when there is a .date between */
+.message-self:nth-child(2) { /* first message */
     border-radius: 0.7em 0 0.7em 0.7em;
 }
 
-.message-receiver + .message-self::after {
+
+.message-receiver + .message-self::after,
+.message-receiver + .date + .message-self::after,
+.message-self:nth-child(2)::after {
     border-left-color: #e7ffdb;
     right: 2px;
     top: 0px;
     transform: rotate(-135deg) translate(0, 70.5%);
 }
 
-.message-self + .message-receiver::after {
-
+.message-self + .message-receiver::after, 
+.message-self + .date + .message-receiver::after,
+.message-receiver:nth-child(2)::after {
     border-left-color: white;
     left: 0px;
     top: 0px;
     transform: rotate(-45deg) translate(0, -70.5%);
-}
-
-
-.message:first-of-type {
-    background-color: red;
-    font-weight: bold;
 }
 
 
