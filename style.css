@@ -244,16 +244,41 @@ body {
     border-radius: 0.6em;
 }
 
-.message-text {
-    font-size: inherit;
-    font-family: inherit;
-    max-width: 100%;
-    resize: none;
-    background: none;
-    border: 0;
-    overflow: hidden;
-
+.controls {
+    display: none;
+    gap: 0.2em;
+    position: absolute;
+    top: 0;
+    right: 0.4em;
+    transform: translateY(-50%);
 }
+
+.message-control {
+    --control-size: 3.8em;
+    color: white;
+
+    text-align: center;
+    line-height: 100%;
+    width: var(--control-size);
+    height: var(--control-size);
+    background-color: rgb(170, 170, 170);
+    border: none;
+    border-radius: 2em;
+    
+}
+
+.message-control.delete-control {
+    background-color: #C62828;
+}
+
+.message-control.edit-control {
+    background-color: #0277BD;
+}
+
+.message-control .material-icons {
+    font-size: 2.2em;
+}
+
 
 .message-self + .message-receiver {
     /* Spacing between messages from diferent sources */
@@ -272,15 +297,6 @@ body {
     bottom: -1em;
     right: -0.7em;
 }
-
-/* .message::before {
-    content: attr(data-time);
-    color: #667781;
-    font-size: 0.7em;
-    position: absolute;
-    bottom: 0.2em;
-    right: 0.8em;
-} */
 
 .message.message-self {
     background-color: #e7ffdb;
