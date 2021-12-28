@@ -234,14 +234,35 @@ body {
 }
 
 .message {
-    font-size: 1.11em;
-    font-weight: 400;
     max-width: 83%;
+    height: auto;
     margin: 0.07em 0;
-    padding: 2% 4% 2% 2%;
-    text-align: left; 
     position: relative;
     border-radius: 0.6em;
+    padding: 2% 2% 3.4% 2%;
+}
+
+.message-text {
+    margin: 0;
+    padding: 0;
+    
+    min-height: 100%;
+    font-size: 1.11em;
+    font-weight: 400;
+    display: inline;
+    
+    text-align: center; 
+    
+}
+
+.data-time {
+    
+    color: #667781;
+    font-size: 0.7em;
+    float: right;
+    position: relative;
+    right: -0.2em;
+    bottom: -1.6em;
 }
 
 .controls {
@@ -289,14 +310,7 @@ body {
     margin-top: 0.5em;
 }
 
-.data-time {
-    color: #667781;
-    font-size: 0.7em;
-    float: right;
-    position: relative;
-    bottom: -1em;
-    right: -0.7em;
-}
+
 
 .message.message-self {
     background-color: #e7ffdb;
