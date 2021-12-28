@@ -1,6 +1,7 @@
 let messages;
 const chat_section = document.querySelector('.chat-section');
 const img_profile = document.querySelector('.receiver-photo-profile');
+const msg_form = document.querySelector('.message-form');
 
 readMessages();
 
@@ -12,12 +13,18 @@ function readMessages(){
 }
 
 
+msg_form.addEventListener('submit', e => {
+    e.preventDefault();
+    const source = 'self';
+    const txt = document.querySelector('.msg-text-input').value;
+    const time = document.querySelector('.msg-time-input').value;
+    createMessage(source, txt, time);
+})
+
 
 img_profile.addEventListener('click', () => {
-    const msg_text = window.prompt('Enter the message text');
-    const time = window.prompt('Enter the sending time');
-
-    createMessage('receiver', msg_text, time);
+    msg_form.style.visibility = msg_form.style.visibility === 'hidden' ? 'visible' : 'hidden'
+    
 });
 
 function toggleControls(e) {
