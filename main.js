@@ -2,29 +2,56 @@ let messages;
 const chat_section = document.querySelector('.chat-section');
 const img_profile = document.querySelector('.receiver-photo-profile');
 const msg_form = document.querySelector('.message-form');
+const source_input = document.querySelector('.source-select');
+const msg_txt_input = document.querySelector('.msg-text-input');
+const add_msg_button = document.querySelector('.add-message-button');
 
 readMessages();
 
-function readMessages(){
-   messages = document.querySelectorAll('.message');
+function readMessages() {
+    messages = document.querySelectorAll('.message');
 
-    for (msg of messages) 
+    for (msg of messages)
         msg.addEventListener('click', toggleControls);
 }
 
 
 msg_form.addEventListener('submit', e => {
     e.preventDefault();
-    const source = 'self';
-    const txt = document.querySelector('.msg-text-input').value;
-    const time = document.querySelector('.msg-time-input').value;
-    createMessage(source, txt, time);
-})
+    const source = source_input.value;
+    const txt = document.querySelector('.msg-text-input');
+    const msg_txt = txt.value;
+    createMessage(source, msg_txt);
+    txt.value = "";
+    
+});
+
+
+source_input.addEventListener('change', () => {
+    // color setting
+    console.log(msg_form.querySelectorAll('.self, .receiver'));
+
+    (function (elements) {
+        for (el of elements) {
+            if (source_input.value === 'receiver') {
+                el.classList.add('receiver');
+                el.classList.remove('self');
+            }
+            else {
+                el.classList.add('self');
+                el.classList.remove('receiver');
+            }
+        }
+    })(msg_form.querySelectorAll('.self, .receiver'));
+});
+    
+    
+
 
 
 img_profile.addEventListener('click', () => {
     msg_form.style.visibility = msg_form.style.visibility === 'hidden' ? 'visible' : 'hidden'
-    
+
 });
 
 function toggleControls(e) {
@@ -38,10 +65,10 @@ function toggleControls(e) {
         controls.style.display = 'none';
     else {
         controls.style.display = 'flex';
-    }    
-        
+    }
 
-    edit_btn.addEventListener('click', function() {
+
+    edit_btn.addEventListener('click', function () {
         console.log('editing')
         const msg_text = message.querySelector('.message-text');
         const new_text = window.prompt('Nuevo mensaje', msg_text.textContent);
@@ -57,11 +84,8 @@ function deleteMessage(e) {
     msg.parentElement.removeChild(msg);
 }
 
-function addReceiverMessage(e) {
-    const message = document.createElement(); 
-}
 
-function createMessage(source, txt, tm){
+function createMessage(source, txt, tm = "5:30 AM") {
     const message = document.createElement('div');
     message.classList.add('message', `message-${source}`);
 
@@ -71,7 +95,7 @@ function createMessage(source, txt, tm){
     // edit button
     const edit_btn = document.createElement('button');
     edit_btn.classList.add('message-control', 'edit-control');
-    
+
     const edit_icon = document.createElement('span');
     edit_icon.classList.add('material-icons');
     edit_icon.textContent = 'edit';
@@ -79,7 +103,7 @@ function createMessage(source, txt, tm){
     // delete button
     const delete_btn = document.createElement('button');
     delete_btn.classList.add('message-control', 'delete-control');
-    
+
     const delete_icon = document.createElement('span');
     delete_icon.classList.add('material-icons');
     delete_icon.textContent = 'clear';

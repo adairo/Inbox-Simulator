@@ -6,8 +6,9 @@
 
 :root {
     --primary-color: #008069;
-    --screen-width: 1080px;
-    --screen-height: 2340px;
+    --screen-height: 97vh;
+    --screen-width: calc(var(--screen-height) * 0.46);
+    
 
     /* --screen-width: 720px;
     --screen-height: 1280px; */
@@ -22,7 +23,12 @@ html {
 
 body {
     background-color: rgb(189, 189, 189);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
+
+
 
 .screen-container {
     position: relative;
@@ -185,58 +191,109 @@ body {
     font-size: 0.95em;
 }
 
+/***************************/
+/* Creating message form */
+
 .message-form {
-    visibility: hidden;
-    font-size: 0.9em;
-    padding: 1em;
+    
+    margin-left: 1rem;
+    font-size: 1.8rem;
+    padding: 0.9em;
     display: flex;
     flex-direction: column;
-    position: absolute;
-    top: 4em;
-    left: 0;
-    z-index: 3;
     background-color: white;
     gap: 0.5em;
     border-radius: 0.4em;
     box-shadow: 0 0 0.8em 0.1em rgba(0, 0, 0, 0.205);
 }
 
-.message-form label {
+.message-form label, button {
+    font-family: "Roboto Condensed", sans-serif;
+    
+}
+
+
+ .source-select {
+    border: none;
+    padding: 0.2em 0.2em;
+    border-radius: 0.3em;
+    
+ }
+
+.source-select, 
+.add-message-button {
     font-size: 0.9em;
 }
 
-.form-group input {
-    font-size: inherit;
-    font-family: inherit;
-}
+ /* User color */
 
-.form-group:nth-child(1) {
-    /* textarea group */
-    /* display: flex; */
-    display: none;
-    justify-content: space-between;
-}
+ .source-select.self,
+ .msg-text-input.self {
+    background-color: #cce7cc;
+ }
+
+ .source-select.receiver,
+ .msg-text-input.receiver {
+     background-color: #d3f1ff;
+ }
+
+ .message-form button.self {
+    background-color: #90d49f;
+ }
+
+ .message-form button.receiver {
+    background-color: #9fdafb;
+ }
+
+ .message-form a.receiver {
+    color: #00649e;
+ }
+
+ .message-form a.self {
+    color: #338a3e;
+ }
+
+ .message-form .material-icons.self {
+    background-color: #338a3e;
+ }
+
+ /* End of user color */
+ 
 
 .msg-text-input {
     font-family: inherit;
     font-size: inherit;
     resize: none;
     margin-top: 0.2em;
+    border: none;
+    border-radius: 0.3em;
+    padding: 0.5em;
+    margin-bottom: 0.4em;
+    outline: none;
 }
 
 .add-message-button{
-    font-size: 0.9em;
-    font-weight: normal;
     background: none;
     border: none;
-    background-color: #3a9dd6;
-    color: white;
-    padding: 0.4em;
+    border-radius: 0.3em;
+    
+    padding: 0.5em;
 }
 
+a.more-options {
+    
+    margin-top: 1.5em;
+    font-size: 0.8em;
+    text-decoration: none;
+    align-self: flex-end;
+}
 
-
-
+.more-options .material-icons {
+    color: white;
+    background-color: rgb(66, 143, 194);
+    border-radius: 1em;
+    padding: 0.15em;
+}
 
 .form-group:nth-child(2) {
     /* textarea group */
@@ -244,6 +301,9 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+/*  End of message form     /*
+/****************************/
 
 .header-group {
     display: flex;
@@ -298,7 +358,7 @@ body {
     height: auto;
     margin: 0.07em 0;
     position: relative;
-    border-radius: 0.6em;
+    border-radius: 1.2rem;
     padding: 1.3% 2% 1.3% 2%;
 }
 
@@ -306,7 +366,7 @@ body {
     margin: 0;
     padding: 0;
     min-height: 100%;
-    font-size: 1.11em;
+    font-size: 1.9rem;
     font-weight: 400;
     display: inline;
     text-align: left; 
@@ -333,16 +393,14 @@ body {
 }
 
 .message-control {
-    --control-size: 3.8em;
+
     color: white;
 
-    text-align: center;
-    line-height: 100%;
-    width: var(--control-size);
-    height: var(--control-size);
+    width: 1.2em;
+    height: 1.2em;
     background-color: rgb(170, 170, 170);
     border: none;
-    border-radius: 2em;
+    border-radius: 4em;
     
 }
 
@@ -355,7 +413,7 @@ body {
 }
 
 .message-control .material-icons {
-    font-size: 2.2em;
+    font-size: 1em;
 }
 
 
@@ -372,6 +430,8 @@ body {
 
 .message.message-self {
     background-color: #e7ffdb;
+    background-color: #dbfacb;
+    
     align-self: flex-end;
     margin-right: 1.1em;
 }
