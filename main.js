@@ -5,6 +5,10 @@ const msg_form = document.querySelector('.message-form');
 const source_input = document.querySelector('.source-select');
 const msg_txt_input = document.querySelector('.msg-text-input');
 const add_msg_button = document.querySelector('.add-message-button');
+const name_input = document.querySelector('#receiver-input-name');
+const status_input = document.querySelector('#receiver-input-status');
+const receiver_name = document.querySelector('.receiver-name');
+const receiver_status = document.querySelector('.receiver-status');
 
 readMessages();
 
@@ -52,6 +56,14 @@ source_input.addEventListener('change', () => {
 img_profile.addEventListener('click', () => {
     msg_form.style.visibility = msg_form.style.visibility === 'hidden' ? 'visible' : 'hidden'
 
+});
+
+name_input.addEventListener('input', function() {
+    receiver_name.textContent = this.value;
+});
+
+status_input.addEventListener('input', function() {
+    receiver_status.textContent = this.value;
 });
 
 function toggleControls(e) {

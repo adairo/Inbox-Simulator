@@ -24,8 +24,14 @@ html {
 body {
     background-color: rgb(189, 189, 189);
     display: flex;
+    
     justify-content: center;
     align-items: flex-start;
+    gap: 1rem;
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 1rem;
+    flex-wrap: wrap;
 }
 
 
@@ -194,24 +200,67 @@ body {
 /***************************/
 /* Creating message form */
 
-.message-form {
-    
-    margin-left: 1rem;
-    font-size: 1.8rem;
-    padding: 0.9em;
+.application-controls {
     display: flex;
     flex-direction: column;
-    background-color: white;
-    gap: 0.5em;
+    gap: 1rem;
+    flex-grow: 1;
+}
+
+.form {
+    font-size: 1.8rem;
+    padding: 0.9em;
     border-radius: 0.4em;
     box-shadow: 0 0 0.8em 0.1em rgba(0, 0, 0, 0.205);
+    background-color: white;
 }
 
-.message-form label, button {
+.form label, 
+.form button {
     font-family: "Roboto Condensed", sans-serif;
-    
 }
 
+.receiver-form {
+    /* Percentage of the notification bar and header added together */
+    /* height: calc(var(--screen-height) * .1072); */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+}
+
+.receiver-form .profile-picture {
+    width: 5rem;
+    height: 5rem;
+    background-color: #cccccc;
+    border-radius: 4rem;
+}
+
+.receiver-form-info {
+    display: flex;
+}
+
+.status-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: flex-end;
+}
+
+
+.receiver-form-info {
+    gap: 1rem;
+}
+
+
+/* Message form */
+
+.message-form {
+    
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
 
  .source-select {
     border: none;
@@ -295,7 +344,7 @@ a.more-options {
     padding: 0.15em;
 }
 
-.form-group:nth-child(2) {
+.message-form .form-group:nth-child(2) {
     /* textarea group */
     
     display: flex;
@@ -366,7 +415,7 @@ a.more-options {
     margin: 0;
     padding: 0;
     min-height: 100%;
-    font-size: 1.9rem;
+    font-size: 2.1rem;
     font-weight: 400;
     display: inline;
     text-align: left; 
@@ -430,8 +479,6 @@ a.more-options {
 
 .message.message-self {
     background-color: #e7ffdb;
-    background-color: #dbfacb;
-    
     align-self: flex-end;
     margin-right: 1.1em;
 }
