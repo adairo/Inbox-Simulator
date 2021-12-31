@@ -1,15 +1,20 @@
-let messages;
 const chat_section = document.querySelector('.chat-section');
 const img_profile = document.querySelector('.receiver-photo-profile');
 const msg_form = document.querySelector('.message-form');
 const source_input = document.querySelector('.source-select');
 const msg_txt_input = document.querySelector('.msg-text-input');
 const add_msg_button = document.querySelector('.add-message-button');
+const photo_input = document.querySelector('#receiver-input-photo');
 const name_input = document.querySelector('#receiver-input-name');
 const status_input = document.querySelector('#receiver-input-status');
 const receiver_name = document.querySelector('.receiver-name');
 const receiver_status = document.querySelector('.receiver-status');
+const sys_time_input = document.querySelector('#sys-time');
+const sys_time = document.querySelector('.clock.notification-icon');
+const time = new Date();
+let messages;
 
+setCurrentTime();
 readMessages();
 
 function readMessages() {
@@ -48,16 +53,31 @@ source_input.addEventListener('change', () => {
         }
     })(msg_form.querySelectorAll('.self, .receiver'));
 });
-    
-    
 
-
-
-img_profile.addEventListener('click', () => {
-    msg_form.style.visibility = msg_form.style.visibility === 'hidden' ? 'visible' : 'hidden'
-
+sys_time_input.addEventListener('input', function() {
+    sys_time.textContent = this.value;
+    if (this.value === "") 
+        setCurrentTime();
 });
 
+
+function setCurrentTime() {
+    let hours = time.getHours();
+        let minutes = time.getMinutes();
+
+        if (hours < 10)
+            hours = "0" + hours;
+        if (minutes < 10)
+            minutes = "0" + minutes;
+        sys_time.textContent = `${hours}:${minutes}`;
+}
+
+photo_input.addEventListener('input', function() {
+    console.log(this)
+    const img_url = URL.createObjectURL(this.files[0]);
+    img_profile.style['background-image'] = `url(${img_url})`;
+});
+    
 name_input.addEventListener('input', function() {
     receiver_name.textContent = this.value;
 });

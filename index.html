@@ -12,6 +12,7 @@
     rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="forms.css">
   <script src="main.js" defer></script>
   <title>Whatsapp Simulator</title>
 
@@ -38,7 +39,7 @@
 
       <div class="header-group">
         <img src="resources/icons/arrow_back_white_24dp.svg" class='back-button'>
-        <img class="receiver-photo-profile" src="http://unsplash.it/50/50?grativiy-center">
+        <div class="receiver-photo-profile" src="canela.jpg"></div>
         <div class="receiver-info">
           <span class="receiver-name">Person 1 </span>
           <span class="receiver-status">status</span>
@@ -99,7 +100,7 @@
 
 
         <!-- <input type="text" class="message-input" placeholder='Message'> -->
-        <textarea name="" class="message-input" placeholder="Message" rows="1" cols="15" wrap="hard"></textarea>
+        <textarea name="" class="message-input" placeholder="Message" rows="1" cols="15"></textarea>
         <img src="resources/icons/attach_file_white_24dp.svg" class="message-bar-icon">
         <img src="resources/icons/photo_camera_white_24dp.svg" class="message-bar-icon">
       </div>
@@ -116,6 +117,8 @@
 
   </div>
 
+
+
   <div class="application-controls">
 
     <div class="form receiver-form">
@@ -125,7 +128,7 @@
       </div>
 
       <div class="form-group receiver-form-info">
-        <div class="profile-picture"></div>
+        <input type="file" accept="image/*" name="" id="receiver-input-photo">
         <div class="status-group">
           <label for="receiver-input-name">Name
             <input type="text" name="" id="receiver-input-name" value="" class="receiver-form-name" placeholder="John Salchichon">
