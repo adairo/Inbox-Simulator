@@ -1,5 +1,5 @@
 const chat_section = document.querySelector('.chat-section');
-const img_profile = document.querySelector('.receiver-photo-profile');
+const img_profile = document.querySelectorAll('.receiver-photo-profile');
 const msg_form = document.querySelector('.message-form');
 const source_input = document.querySelector('.source-select');
 const msg_txt_input = document.querySelector('.msg-text-input');
@@ -73,9 +73,10 @@ function setCurrentTime() {
 }
 
 photo_input.addEventListener('input', function() {
-    console.log(this)
     const img_url = URL.createObjectURL(this.files[0]);
-    img_profile.style['background-image'] = `url(${img_url})`;
+    console.log(img_profile);
+    img_profile[0].style['background-image'] = `url(${img_url})`;
+    img_profile[1].style['background-image'] = `url(${img_url})`;
 });
     
 name_input.addEventListener('input', function() {

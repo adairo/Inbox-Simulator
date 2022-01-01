@@ -122,43 +122,49 @@
   <div class="application-controls">
 
     <div class="form receiver-form">
+
       <div class="form-group">
         <label for="sys-time">System time</label>
-        <input type="time" name="" id="sys-time">
+        <input type="time" name="" id="sys-time" class='input-form'>
       </div>
 
       <div class="form-group receiver-form-info">
+        <label for="receiver-input-photo" class='receiver-photo-profile photo-input'><span class="material-icons layer-photo">add_a_photo</span></label>
         <input type="file" accept="image/*" name="" id="receiver-input-photo">
         <div class="status-group">
           <label for="receiver-input-name">Name
-            <input type="text" name="" id="receiver-input-name" value="" class="receiver-form-name" placeholder="John Salchichon">
+            <input type="text" name="" id="receiver-input-name" value="" class="receiver-form-name input-form" placeholder="Receiver's name">
           </label>
-          
           <label for="receiver-input-status">Status
-            <input type="text" name="" id="receiver-input-status" value="" class="receiver-form-status" placeholder="online">
+            <input type="text" name="" id="receiver-input-status" value="" class="receiver-form-status input-form" placeholder="Receiver's status">
           </label>
-          
         </div>
       </div>
+
     </div>
 
 
     <form action="/" class="form message-form self">
-      <div class="form-group">
-        <label for="self-option">Write as</label>
-        <select name="source" class='source-select self'>
+      <div class="form-group" id='source-time'>
+        <label for="self-option">Write as
+        <select name="source" class='input-form source-select self'>
           <option value="self">Me</option>
           <option value="receiver">Person 1</option>
         </select>
+        </label>
+
+        <label for="message-time">Time
+          <input type="time" name="" id="message-time" class='input-form self'>
+        </label>
       </div>
       <div class="form-group">
         <textarea name="" id="msg_input" cols="20" rows="3" class='msg-text-input self'
           placeholder="Message..."></textarea>
         <!-- <input type="time" name="" id="" class='msg-time-input'> -->
         <button type="submit" class='add-message-button self'>Add message</button>
-        <a href="#" class='more-options self'>See more options <span class="material-icons self">
-            navigate_next
-          </span></a>
+        <a href="#" class='more-options self'>See more options 
+          <!-- <span class="material-icons self">navigate_next</span> -->
+        </a>
       </div>
 
     </form>
