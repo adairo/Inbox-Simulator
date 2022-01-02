@@ -11,10 +11,10 @@ const receiver_name = document.querySelector('.receiver-name');
 const receiver_status = document.querySelector('.receiver-status');
 const sys_time_input = document.querySelector('#sys-time');
 const sys_time = document.querySelector('.clock.notification-icon');
-const time = new Date();
+const msg_time_input = document.querySelector('#message-time');
 let messages;
 
-setCurrentTime();
+setup();
 readMessages();
 
 function readMessages() {
@@ -30,7 +30,8 @@ msg_form.addEventListener('submit', e => {
     const source = source_input.value;
     const txt = document.querySelector('.msg-text-input');
     const msg_txt = txt.value;
-    createMessage(source, msg_txt);
+    const time = msg_time_input.value;
+    createMessage(source, msg_txt, time);
     txt.value = "";
     
 });
@@ -54,23 +55,13 @@ source_input.addEventListener('change', () => {
     })(msg_form.querySelectorAll('.self, .receiver'));
 });
 
-sys_time_input.addEventListener('input', function() {
+sys_time_input.addEventListener('input', function () {
+    console.log(this)
     sys_time.textContent = this.value;
     if (this.value === "") 
-        setCurrentTime();
+        sys_time_input.value = sys_time.textContent = getCurrentTime();
 });
 
-
-function setCurrentTime() {
-    let hours = time.getHours();
-        let minutes = time.getMinutes();
-
-        if (hours < 10)
-            hours = "0" + hours;
-        if (minutes < 10)
-            minutes = "0" + minutes;
-        sys_time.textContent = `${hours}:${minutes}`;
-}
 
 photo_input.addEventListener('input', function() {
     const img_url = URL.createObjectURL(this.files[0]);
@@ -86,6 +77,23 @@ name_input.addEventListener('input', function() {
 status_input.addEventListener('input', function() {
     receiver_status.textContent = this.value;
 });
+
+function getCurrentTime() {
+    const t = new Date();
+    let hours = t.getHours();
+    let minutes = t.getMinutes();
+
+    if (hours < 10)
+        hours = "0" + hours;
+    if (minutes < 10)
+        minutes = "0" + minutes;
+
+    return `${hours}:${minutes}`;
+}
+function setup() {
+
+    sys_time_input.value = sys_time.textContent = msg_time_input.value = getCurrentTime();
+}
 
 function toggleControls(e) {
 

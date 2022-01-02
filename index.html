@@ -31,6 +31,7 @@
         <span class="material-icons notification-icon">signal_wifi_4_bar</span>
         <span class="material-icons notification-icon">signal_cellular_4_bar</span>
         <span class="material-icons notification-icon">battery_full</span>
+        <span class="notification-icon percentaje">45%</span>
         <!-- <span class="notification-icon">75%</span> -->
       </div>
     </div>
@@ -59,22 +60,8 @@
       <!-- <p class="security-info"></p> -->
       <p class="date">11/12/21</p>
 
-      <div class="message message-self" tabindex="0">
-        <div class="controls">
-          <button class="message-control edit-control">
-            <span class="material-icons">edit</span>
-          </button>
 
-          <button class="message-control delete-control">
-            <span class="material-icons">clear</span>
-          </button>
-        </div>
-        <p class="message-text">Hi this is a test </p>
-
-        <span class="data-time">6:04 AM</span>
-      </div>
-
-      <div class="message message-receiver" tabindex="0">
+      <!-- <div class="message message-receiver" tabindex="0">
         <div class="controls">
           <button class="message-control edit-control">
             <span class="material-icons">edit</span>
@@ -87,7 +74,7 @@
         <p class="message-text">Hi how are u? </p>
 
         <span class="data-time">6:04 AM</span>
-      </div>
+      </div> -->
 
 
 
@@ -122,11 +109,18 @@
   <div class="application-controls">
 
     <div class="form receiver-form">
+      <p class='form-legend'>System settings</p>
+      <div class="form-group space-between">
+        <label for="sys-time">Time
+          <input type="time" name="" id="sys-time" class='input-form'>
+        </label>
 
-      <div class="form-group">
-        <label for="sys-time">System time</label>
-        <input type="time" name="" id="sys-time" class='input-form'>
+        <label for="battery-percentaje">Battery level
+          <input type="number" min="1" max="100" id="battery-percentaje" class='input-form' placeholder="45%" value="100"> %
+        </label>
+        
       </div>
+      <p class='form-legend'>Receiver settings</p>
 
       <div class="form-group receiver-form-info">
         <label for="receiver-input-photo" class='receiver-photo-profile photo-input'><span class="material-icons layer-photo">add_a_photo</span></label>
@@ -145,11 +139,13 @@
 
 
     <form action="/" class="form message-form self">
-      <div class="form-group" id='source-time'>
+      <p class='form-legend'>Create new message</p>
+
+      <div class="form-group space-between">
         <label for="self-option">Write as
         <select name="source" class='input-form source-select self'>
           <option value="self">Me</option>
-          <option value="receiver">Person 1</option>
+          <option value="receiver">Person</option>
         </select>
         </label>
 

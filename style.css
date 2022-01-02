@@ -28,7 +28,7 @@ body {
     justify-content: center;
     align-items: flex-start;
     gap: 1rem;
-    max-width: 900px;
+    /* max-width: 900px; */
     margin: 0 auto;
     padding: 1rem;
     flex-wrap: wrap;
@@ -144,6 +144,12 @@ body {
 .notification-icon {
     font-size: 0.9em;
     margin-right: 0.13em;
+}
+
+.notification-icon.percentaje {
+    font-size: 0.9em;
+    position: relative;
+    bottom: -0.08em;
 }
 
 .notification-icon:last-child {
