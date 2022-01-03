@@ -4,42 +4,109 @@ const msg_form = document.querySelector('.message-form');
 const source_input = document.querySelector('.source-select');
 const msg_txt_input = document.querySelector('.msg-text-input');
 const add_msg_button = document.querySelector('.add-message-button');
+const sys_time_input = document.querySelector('#sys-time');
+const sys_battery_input = document.querySelector('#battery-percentaje-input');
 const photo_input = document.querySelector('#receiver-input-photo');
 const name_input = document.querySelector('#receiver-input-name');
 const status_input = document.querySelector('#receiver-input-status');
+const msg_time_input = document.querySelector('#message-time');
+
 const receiver_name = document.querySelector('.receiver-name');
 const receiver_status = document.querySelector('.receiver-status');
-const sys_time_input = document.querySelector('#sys-time');
 const sys_time = document.querySelector('.clock.notification-icon');
-const msg_time_input = document.querySelector('#message-time');
-let messages;
+const sys_battery = document.querySelector('.percentaje.notification-icon');
+
+const messages = [];
+
+class Message {
+    constructor(source, text, time) {
+        this.source = source;
+        this.text = text;
+        this.time = time;
+        this.element = setUpMessage(this);
+        messages.push(this);
+        readMessages();
+    }
+}
+
+function setUpMessage(msg) {
+    const message = document.createElement('div');
+    message.classList.add('message', `message-${msg.source}`);
+
+    // controls section
+    const controls = document.createElement('div');
+    controls.classList.add('controls');
+
+    // edit button
+    const edit_btn = document.createElement('button');
+    edit_btn.classList.add('message-control', 'edit-control');
+
+    // edit icon
+    const edit_icon = document.createElement('span');
+    edit_icon.classList.add('material-icons');
+    edit_icon.textContent = 'edit';
+
+    // delete button
+    const delete_btn = document.createElement('button');
+    delete_btn.classList.add('message-control', 'delete-control');
+
+    const delete_icon = document.createElement('span');
+    delete_icon.classList.add('material-icons');
+    delete_icon.textContent = 'clear';
+
+    // message text
+    const msg_text = document.createElement('p');
+    msg_text.classList.add('message-text');
+    msg_text.textContent = msg.text;
+
+    // time of send
+    const time = document.createElement('span');
+    time.classList.add('data-time');
+    time.textContent = msg.time;
+
+    message.appendChild(controls);
+    controls.appendChild(edit_btn);
+    controls.appendChild(delete_btn);
+    edit_btn.appendChild(edit_icon);
+    delete_btn.appendChild(delete_icon);
+    message.appendChild(msg_text);
+    message.appendChild(time);
+    
+    return message;
+}
 
 setup();
 readMessages();
 
 function readMessages() {
-    messages = document.querySelectorAll('.message');
 
-    for (msg of messages)
-        msg.addEventListener('click', toggleControls);
+    for (msg of messages){
+        chat_section.appendChild(msg.element);
+        msg.element.addEventListener('click', toggleControls);
+    }
 }
 
+/* Event listeners */
+
+sys_battery_input.addEventListener('input', () => {
+    sys_battery.textContent = sys_battery_input.value + '%';
+})
 
 msg_form.addEventListener('submit', e => {
     e.preventDefault();
-    const source = source_input.value;
-    const txt = document.querySelector('.msg-text-input');
-    const msg_txt = txt.value;
-    const time = msg_time_input.value;
-    createMessage(source, msg_txt, time);
-    txt.value = "";
     
+    const source = source_input.value;
+    const txt = msg_txt_input.value;
+    let time = msg_time_input.value;
+    if (time === "")
+        time = getCurrentTime();
+    new Message(source, txt, time);    
+    msg_txt_input.value = "";
 });
 
 
 source_input.addEventListener('change', () => {
     // color setting
-    console.log(msg_form.querySelectorAll('.self, .receiver'));
 
     (function (elements) {
         for (el of elements) {
@@ -72,10 +139,16 @@ photo_input.addEventListener('input', function() {
     
 name_input.addEventListener('input', function() {
     receiver_name.textContent = this.value;
+
+    if (this.value === "")
+        receiver_name.textContent = this.placeholder;
 });
 
 status_input.addEventListener('input', function() {
     receiver_status.textContent = this.value;
+
+    if (this.value === "")
+        receiver_status.textContent = this.placeholder;
 });
 
 function getCurrentTime() {
@@ -92,7 +165,26 @@ function getCurrentTime() {
 }
 function setup() {
 
+    // times
     sys_time_input.value = sys_time.textContent = msg_time_input.value = getCurrentTime();
+
+    // batery level 
+    sys_battery.textContent = sys_battery_input.value + '%';
+
+    // receiver info
+    receiver_name.textContent = name_input.value;
+    receiver_status.textContent = status_input.value;
+ 
+    if (name_input.value === "") 
+        receiver_name.textContent = name_input.placeholder;
+    
+    if (status_input.value === "")
+        receiver_status.textContent = status_input.placeholder;
+
+    // source selector
+    source_input.value = "self";
+
+
 }
 
 function toggleControls(e) {
@@ -102,11 +194,7 @@ function toggleControls(e) {
     const edit_btn = controls.querySelector('.edit-control');
     const delete_btn = controls.querySelector('.delete-control');
 
-    if (controls.style.display === 'flex')
-        controls.style.display = 'none';
-    else {
-        controls.style.display = 'flex';
-    }
+    controls.classList.toggle('active');
 
 
     edit_btn.addEventListener('click', function () {
@@ -126,50 +214,8 @@ function deleteMessage(e) {
 }
 
 
-function createMessage(source, txt, tm = "5:30 AM") {
-    const message = document.createElement('div');
-    message.classList.add('message', `message-${source}`);
 
-    const controls = document.createElement('div');
-    controls.classList.add('controls');
 
-    // edit button
-    const edit_btn = document.createElement('button');
-    edit_btn.classList.add('message-control', 'edit-control');
-
-    const edit_icon = document.createElement('span');
-    edit_icon.classList.add('material-icons');
-    edit_icon.textContent = 'edit';
-
-    // delete button
-    const delete_btn = document.createElement('button');
-    delete_btn.classList.add('message-control', 'delete-control');
-
-    const delete_icon = document.createElement('span');
-    delete_icon.classList.add('material-icons');
-    delete_icon.textContent = 'clear';
-
-    // message text
-    const msg_text = document.createElement('p');
-    msg_text.classList.add('message-text');
-    msg_text.textContent = txt;
-
-    // time of send
-    const time = document.createElement('span');
-    time.classList.add('data-time');
-    time.textContent = tm;
-
-    message.appendChild(controls);
-    controls.appendChild(edit_btn);
-    controls.appendChild(delete_btn);
-    edit_btn.appendChild(edit_icon);
-    delete_btn.appendChild(delete_icon);
-    message.appendChild(msg_text);
-    message.appendChild(time);
-
-    chat_section.appendChild(message);
-    readMessages();
-}
 
 
 

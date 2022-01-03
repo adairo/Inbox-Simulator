@@ -292,6 +292,10 @@ body {
     transform: translateY(-50%);
 }
 
+.controls.active {
+    display: flex;
+}
+
 .message-control {
 
     color: white;
