@@ -57,8 +57,10 @@
 
 
     <div class="chat-section">
-      <!-- <p class="security-info"></p> -->
-      <p class="date">11/12/21</p>
+      <p class="security-info"><span class="material-icons lock-icon">lock</span>Messages and calls are end-to-end encrypted. No one
+        outside of this chat, not even Whatsapp, can read or listen to them. Tap to learn more.
+      </p>
+      <!-- <p class="date">11/12/21</p> -->
 
 
       <!-- <div class="message message-receiver" tabindex="0">
@@ -75,9 +77,6 @@
 
         <span class="data-time">6:04 AM</span>
       </div> -->
-
-
-
 
     </div>
 
@@ -116,21 +115,24 @@
         </label>
 
         <label for="battery-percentaje-input">Battery level
-          <input type="number" min="1" max="100" id="battery-percentaje-input" class='input-form' placeholder="45%" value="100"> %
+          <input type="number" min="1" max="100" id="battery-percentaje-input" class='input-form' placeholder="45"> %
         </label>
-        
+
       </div>
       <p class='form-legend'>Receiver settings</p>
 
       <div class="form-group receiver-form-info">
-        <label for="receiver-input-photo" class='receiver-photo-profile photo-input'><span class="material-icons layer-photo">add_a_photo</span></label>
+        <label for="receiver-input-photo" class='receiver-photo-profile photo-input'><span
+            class="material-icons layer-photo">add_a_photo</span></label>
         <input type="file" accept="image/*" name="" id="receiver-input-photo">
         <div class="status-group">
           <label for="receiver-input-name">Name
-            <input type="text" name="" id="receiver-input-name" class="receiver-form-name input-form" placeholder="Receiver's name" value="">
+            <input type="text" name="" id="receiver-input-name" class="receiver-form-name input-form"
+              placeholder="Receiver's name" value="">
           </label>
           <label for="receiver-input-status">Status
-            <input type="text" name="" id="receiver-input-status"  class="receiver-form-status input-form" placeholder="Receiver's status" value="">
+            <input type="text" name="" id="receiver-input-status" class="receiver-form-status input-form"
+              placeholder="Receiver's status" value="">
           </label>
         </div>
       </div>
@@ -142,23 +144,31 @@
       <p class='form-legend'>Create new message</p>
 
       <div class="form-group space-between">
-        <label for="self-option">Write as
-        <select name="source" class='input-form source-select self'>
-          <option value="self">Me</option>
-          <option value="receiver">Person</option>
-        </select>
+        <label for="self-option">From
+          <select name="source" class='input-form source-select self'>
+            <option value="self">Me</option>
+            <option value="receiver">Person</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="form-group space-between">
+
+        <label for="message-time">Date
+          <input type="date" id="message-date" class='input-form self'>
         </label>
 
         <label for="message-time">Time
           <input type="time" name="" id="message-time" class='input-form self'>
         </label>
       </div>
+        
       <div class="form-group">
         <textarea name="" id="msg_input" cols="20" rows="3" class='msg-text-input self'
           placeholder="Message..."></textarea>
         <!-- <input type="time" name="" id="" class='msg-time-input'> -->
         <button type="submit" class='add-message-button self'>Add message</button>
-        <a href="#" class='more-options self'>See more options 
+        <a href="#" class='more-options self'>See more options
           <!-- <span class="material-icons self">navigate_next</span> -->
         </a>
       </div>

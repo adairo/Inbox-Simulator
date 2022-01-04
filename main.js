@@ -15,11 +15,13 @@ const receiver_name = document.querySelector('.receiver-name');
 const receiver_status = document.querySelector('.receiver-status');
 const sys_time = document.querySelector('.clock.notification-icon');
 const sys_battery = document.querySelector('.percentaje.notification-icon');
+const idGenerator = getNewID();
 
 const messages = [];
 
 class Message {
     constructor(source, text, time) {
+        this.id = idGenerator.next().value;
         this.source = source;
         this.text = text;
         this.time = time;
@@ -29,9 +31,17 @@ class Message {
     }
 }
 
+function* getNewID() {
+    let id = 0;
+    while(true) {
+        yield ++id;
+    }
+}
+
 function setUpMessage(msg) {
     const message = document.createElement('div');
     message.classList.add('message', `message-${msg.source}`);
+    message.setAttribute('id', msg.id);
 
     // controls section
     const controls = document.createElement('div');
@@ -79,7 +89,7 @@ setup();
 readMessages();
 
 function readMessages() {
-
+    document.querySelector('.security-info').classList.toggle('show', messages.length === 0)
     for (msg of messages){
         chat_section.appendChild(msg.element);
         msg.element.addEventListener('click', toggleControls);
@@ -89,7 +99,9 @@ function readMessages() {
 /* Event listeners */
 
 sys_battery_input.addEventListener('input', () => {
-    sys_battery.textContent = sys_battery_input.value + '%';
+    sys_battery.textContent = sys_battery_input.value <= 100 ? sys_battery_input.value + '%' : 100 + '%';
+    if (sys_battery_input.value === "")
+        sys_battery.textContent = sys_battery_input.placeholder + '%';
 })
 
 msg_form.addEventListener('submit', e => {
@@ -170,6 +182,8 @@ function setup() {
 
     // batery level 
     sys_battery.textContent = sys_battery_input.value + '%';
+    if (sys_battery_input.value === "")
+        sys_battery.textContent = sys_battery_input.placeholder + '%';
 
     // receiver info
     receiver_name.textContent = name_input.value;
@@ -209,8 +223,11 @@ function toggleControls(e) {
 }
 
 function deleteMessage(e) {
-    let msg = e.currentTarget.parentElement.parentElement;
-    msg.parentElement.removeChild(msg);
+    const element = e.currentTarget.parentElement.parentElement;
+    const index = messages.indexOf(messages.find( msg => msg.id == element.getAttribute('id'))); // remove this element
+    messages.splice(index, 1);
+    element.parentElement.removeChild(element);
+    readMessages();
 }
 
 

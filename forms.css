@@ -35,6 +35,25 @@
     cursor: text;
  }
 
+ .form button {
+     outline: none;
+ }
+
+ .input-form:focus {
+     border: 1px solid rgb(185, 185, 185);
+ }
+
+ .input-form.self:focus,
+ .message-form button.self:focus,
+ .msg-text-input.self:focus {
+     border: 1px solid #66b878;
+ }
+
+ .input-form.receiver:focus,
+ .message-form button.receiver:focus {
+     border: 1px solid #6eb2da;
+ }
+
 .receiver-form {
     display: flex;
     flex-direction: column;
@@ -60,15 +79,6 @@
     border-bottom: 2px dotted #90909080;
 }
 
-.form-legend::before {
-    
-}
-
-/* .form-legend::after {
-    flex-grow: 1;
-    content:"";
-    background-color: red;
-} */
 
 .receiver-form-info {
     display: flex;
@@ -136,7 +146,7 @@
     
     display: flex;
     flex-direction: column;
-    gap: 0.5em;
+    gap: 0.6em;
 }
 
 .form-group.space-between {
@@ -162,6 +172,8 @@
  .msg-text-input.receiver {
      background-color: #d3f1ff;
  }
+
+
 
  .message-form button.self {
     background-color: #90d49f;
@@ -190,7 +202,6 @@
     font-family: inherit;
     font-size: inherit;
     resize: none;
-    margin-top: 0.2em;
     border: none;
     border-radius: 0.3em;
     padding: 0.5em;
@@ -221,7 +232,7 @@ a.more-options {
     padding: 0.15em;
 }
 
-.message-form .form-group:nth-child(3) {
+.message-form .form-group:nth-child(4) {
     /* textarea group */
     
     display: flex;
