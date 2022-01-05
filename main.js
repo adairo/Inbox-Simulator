@@ -9,6 +9,7 @@ const sys_battery_input = document.querySelector('#battery-percentaje-input');
 const photo_input = document.querySelector('#receiver-input-photo');
 const name_input = document.querySelector('#receiver-input-name');
 const status_input = document.querySelector('#receiver-input-status');
+const msg_date_input = document.querySelector('#message-date');
 const msg_time_input = document.querySelector('#message-time');
 
 const receiver_name = document.querySelector('.receiver-name');
@@ -20,11 +21,11 @@ const idGenerator = getNewID();
 const messages = [];
 
 class Message {
-    constructor(source, text, time) {
+    constructor(source, text, date_time) {
         this.id = idGenerator.next().value;
         this.source = source;
         this.text = text;
-        this.time = time;
+        this.date_time = date_time;
         this.element = setUpMessage(this);
         messages.push(this);
         readMessages();
@@ -72,7 +73,7 @@ function setUpMessage(msg) {
     // time of send
     const time = document.createElement('span');
     time.classList.add('data-time');
-    time.textContent = msg.time;
+    time.textContent = getTimeString(msg.date_time);
 
     message.appendChild(controls);
     controls.appendChild(edit_btn);
@@ -104,15 +105,31 @@ sys_battery_input.addEventListener('input', () => {
         sys_battery.textContent = sys_battery_input.placeholder + '%';
 })
 
-msg_form.addEventListener('submit', e => {
+msg_form.addEventListener('submit', function createMessage(e) {
+    // Creating a new message
     e.preventDefault();
     
-    const source = source_input.value;
     const txt = msg_txt_input.value;
-    let time = msg_time_input.value;
-    if (time === "")
-        time = getCurrentTime();
-    new Message(source, txt, time);    
+    
+    if (txt === "")
+    return ;
+    
+    const msgDateTime = new Date();
+    const source = source_input.value
+    const date = msg_date_input.value;
+    const time = msg_time_input.value;
+
+    if (date !== ""){
+        msgDateTime.setFullYear = date.slice(0, 4);
+        msgDateTime.setMonth = date.slice(5, 7);
+        msgDateTime.setDate = date.slice(8, 10);
+    }
+    if (time !== ""){
+        msgDateTime.setHours(time.slice(0, 2));
+        msgDateTime.setMinutes(time.slice(3, 5));
+    }
+    
+    new Message(source, txt, msgDateTime);    
     msg_txt_input.value = "";
 });
 
@@ -138,7 +155,7 @@ sys_time_input.addEventListener('input', function () {
     console.log(this)
     sys_time.textContent = this.value;
     if (this.value === "") 
-        sys_time_input.value = sys_time.textContent = getCurrentTime();
+        sys_time.textContent = getTimeString(new Date());
 });
 
 
@@ -163,10 +180,9 @@ status_input.addEventListener('input', function() {
         receiver_status.textContent = this.placeholder;
 });
 
-function getCurrentTime() {
-    const t = new Date();
-    let hours = t.getHours();
-    let minutes = t.getMinutes();
+function getTimeString(date) {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
 
     if (hours < 10)
         hours = "0" + hours;
@@ -175,10 +191,27 @@ function getCurrentTime() {
 
     return `${hours}:${minutes}`;
 }
+
+function getDateString(date) {
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1; // return a number between 0-11
+    let day = date.getDate();
+
+    if (month < 10)
+        month = '0' + month;
+    
+    if (day < 10)
+        day = '0' + day;
+
+    return `${year}-${month}-${day}`;   
+}
+
+
 function setup() {
 
     // times
-    sys_time_input.value = sys_time.textContent = msg_time_input.value = getCurrentTime();
+    const currentDateTime = new Date();
+    sys_time_input.value = sys_time.textContent = msg_time_input.value = getTimeString(currentDateTime);
 
     // batery level 
     sys_battery.textContent = sys_battery_input.value + '%';
@@ -197,6 +230,9 @@ function setup() {
 
     // source selector
     source_input.value = "self";
+
+    // message stuff
+    msg_date_input.value = getDateString(currentDateTime);
 
 
 }
