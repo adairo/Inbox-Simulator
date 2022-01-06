@@ -264,7 +264,7 @@ body {
     top: 0.1em
 }
 
-.date {
+.date-tag {
     font-size: 0.917em;
     font-weight: 500;
     color: #54656f;
@@ -371,8 +371,8 @@ body {
 /* General ::after */
 .message-self + .message-receiver::after,
 .message-receiver + .message-self::after,
-.message-self + .date + .message-receiver::after,
-.message-receiver + .date + .message-self::after,
+.message-self + .date-tag + .message-receiver::after,
+.message-receiver + .date-tag + .message-self::after,
 .message:nth-child(2)::after { /* first message*/
     /* Triangle pointing to user side */
     content: "";
@@ -382,21 +382,21 @@ body {
 
 /* Rect border for message-receiver */
 .message-self + .message-receiver, /* first message-receiver after message-self*/
-.message-self + .date + .message-receiver, /* first message-receiver when there is a .date between */
+.message-self + .date-tag + .message-receiver, /* first message-receiver when there is a .date between */
 .message-receiver:nth-child(2) { /* first message */
     border-radius: 0 0.7em 0.7em 0.7em;
 }
 
 /* Rect border for message-self */
 .message-receiver + .message-self, /* first message-self after message-self*/
-.message-receiver + .date + .message-self, /* first message-self when there is a .date between */
+.message-receiver + .date-tag + .message-self, /* first message-self when there is a .date between */
 .message-self:nth-child(2) { /* first message */
     border-radius: 0.7em 0 0.7em 0.7em;
 }
 
 
 .message-receiver + .message-self::after,
-.message-receiver + .date + .message-self::after,
+.message-receiver + .date-tag + .message-self::after,
 .message-self:nth-child(2)::after {
     border-left-color: #e7ffdb;
     right: 2px;
@@ -405,7 +405,7 @@ body {
 }
 
 .message-self + .message-receiver::after, 
-.message-self + .date + .message-receiver::after,
+.message-self + .date-tag + .message-receiver::after,
 .message-receiver:nth-child(2)::after {
     border-left-color: white;
     left: 0px;
