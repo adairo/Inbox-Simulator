@@ -66,6 +66,7 @@ function setUpMessage(msg) {
   const message = document.createElement('div');
   message.classList.add('message', `message-${msg.source}`);
   message.setAttribute('id', msg.id);
+  message.dataset.date = getDateString(msg.date_time);
 
   // controls section
   const controls = document.createElement('div');
@@ -116,6 +117,14 @@ function readMessages() {
   const dates = Object.keys(messages);
   document.querySelector('.security-info').classList.toggle('show', dates.length === 0)
 
+  // clear the chat-section
+  // while(chat_section.firstChild)
+  const prevMessages = chat_section.querySelectorAll('.message');
+  const dateLabels = chat_section.querySelectorAll('.date-tag');
+
+  prevMessages.forEach( element => element.parentElement.removeChild(element));
+  dateLabels.forEach(element => element.parentElement.removeChild(element));
+
   for (let date of dates) {
     chat_section.append(messages[date].date_tag)
     for (let msg of messages[date]) {
@@ -134,7 +143,13 @@ function readMessages() {
 function createDateTag(date) {
   const date_tag = document.createElement('p');
   date_tag.classList.add('date-tag');
-  date_tag.innerText = getDateString(date);
+  const month = date.toLocaleString('default', { month: 'long' });
+  // switch(date.getMonth() + 1) {
+  //   case 0:
+  //     month = "January"
+  //     break;
+  // }
+  date_tag.innerText = `${month} ${date.getDate()}, ${date.getFullYear()}`;
   return date_tag;
 }
 
@@ -152,7 +167,7 @@ msg_form.addEventListener('submit', function createMessage(e) {
 
   const txt = msg_txt_input.value;
 
-  if (txt === "")
+  if (txt.trim() === "")
     return;
 
   const msgDateTime = new Date();
@@ -268,13 +283,16 @@ function setup() {
   if (status_input.value === "")
     receiver_status.textContent = status_input.placeholder;
 
+  // default profile picture
+  const img_url = './default-profile.png';
+  img_profile[0].style['background-image'] = `url(${img_url})`;
+  img_profile[1].style['background-image'] = `url(${img_url})`;
+
   // source selector
   source_input.value = "self";
 
   // message stuff
-  msg_date_input.value = getDateString(currentDateTime);
-
-
+  // msg_date_input.value = getDateString(currentDateTime);
 }
 
 function toggleControls(e) {
@@ -300,9 +318,18 @@ function toggleControls(e) {
 
 function deleteMessage(e) {
   const element = e.currentTarget.parentElement.parentElement;
-  const index = messages.indexOf(messages.find(msg => msg.id == element.getAttribute('id'))); // remove this element
-  messages.splice(index, 1);
-  element.parentElement.removeChild(element);
+  const date = element.dataset.date;
+
+  const msgIndex = messages[date]
+  .indexOf(messages[date]
+  .find( msg => msg.id == element.id));
+
+  messages[date].splice(msgIndex, 1); // remove the msg object
+
+  if (messages[date].length === 0)
+    delete messages[date];
+
+  //element.parentElement.removeChild(element); // we just need to remove it from the list, I think
   readMessages();
 }
 
