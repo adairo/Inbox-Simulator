@@ -40,6 +40,19 @@ function* getNewID() {
 }
 
 function insertMessage(newMessage) {
+  // get a new Message reference
+  // check if is the first element, then push a new day
+  //    add the Date object as array property 
+  //    push the new Message to that day
+  // if is not the first element, search for that day
+  //    if the year, month and date is the same, that day exists
+  //    push the newMessage
+  // if that day doesn't exists, go through the whole array and answer:
+  //    is newMessage.getDay() >= currentMessage.getDay();
+  //    insert a new day in that position
+  //    add the Date object as array property 
+  //    push the new Message to that day        
+  
   const dates = Object.keys(messages)
   const dateMsg = getDateString(newMessage.date_time);
 
