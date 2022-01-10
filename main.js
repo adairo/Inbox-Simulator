@@ -18,8 +18,6 @@ const sys_time = document.querySelector('.clock.notification-icon');
 const sys_battery = document.querySelector('.percentaje.notification-icon');
 const idGenerator = getNewID();
 
-const messages = [];
-
 class Message {
   constructor(source, text, date_time) {
     this.id = idGenerator.next().value;
@@ -32,6 +30,13 @@ class Message {
   }
 }
 
+const messages = [];
+
+setup();
+
+readMessages();
+
+
 function* getNewID() {
   let id = 0;
   while (true) {
@@ -39,46 +44,47 @@ function* getNewID() {
   }
 }
 
-function insertMessage(newMessage) {
-  // get a new Message reference
-  // check if is the first element, then push a new day
-  //    add the Date object as array property 
-  //    push the new Message to that day
-  // if is not the first element, search for that day
-  //    if the year, month and date is the same, that day exists
-  //    push the newMessage
-  // if that day doesn't exists, go through the whole array and answer:
-  //    is newMessage.getDay() >= currentMessage.getDay();
-  //    insert a new day in that position
-  //    add the Date object as array property 
-  //    push the new Message to that day        
+function insertMessage(newMessage) {      
   
-  const dates = Object.keys(messages)
-  const dateMsg = getDateString(newMessage.date_time);
+  // first message on chat
+  if (messages.length === 0)
+  {
+    messages.push([newMessage]);
+    messages[0].date = newMessage.date_time;
+    messages[0].date_label = createDateLabel(newMessage.date_time);
+    return;
+  }
+  
+  // if that day already exists
+  if (messages.length >= 1) {
+    for (let day of messages){
+      if (day.date.getFullYear() === newMessage.date_time.getFullYear()
+          && day.date.getMonth() === newMessage.date_time.getMonth()
+          && day.date.getDate() === newMessage.date_time.getDate()) {
+            day.push(newMessage)
+            return;
+      }
+    }
+  }
 
-  if (dates.length === 0) {
-    // Create a new day and its date-tag
-    messages[dateMsg] = [newMessage];
-    messages[dateMsg].date_tag = createDateTag(newMessage.date_time);
+  // Search for the position to insert the message
+  let index = 0;
+  while(index < messages.length &&
+    newMessage.date_time.getTime() >= messages[index].date.getTime()) {
+    index++;
   }
-  else {
-    // check if there exists messages on that day
-    if (dates.indexOf(dateMsg) >= 0) {
-      messages[dateMsg].push(newMessage);
-    }
-    else {
-      messages[dateMsg] = [newMessage];
-      messages[dateMsg].date_tag = createDateTag(newMessage.date_time);
-    }
-  }
-    // messages[getDateString(newMessage.date_time)].push(newMessage);
-  
+
+  // Insert it 
+  messages.splice(index, 0, [newMessage]);
+  messages[index].date = newMessage.date_time;
+  messages[index].date_label = createDateLabel(newMessage.date_time);
 }
 
 function setUpMessage(msg) {
   const message = document.createElement('div');
   message.classList.add('message', `message-${msg.source}`);
   message.setAttribute('id', msg.id);
+  message.setAttribute('tabindex', "0");
   message.dataset.date = getDateString(msg.date_time);
 
   // controls section
@@ -123,50 +129,39 @@ function setUpMessage(msg) {
   return message;
 }
 
-setup();
-readMessages();
 
 function readMessages() {
-  const dates = Object.keys(messages);
-  document.querySelector('.security-info').classList.toggle('show', dates.length === 0)
+  document.querySelector('.security-info')
+  .classList.toggle('show', messages.length === 0)
 
   // clear the chat-section
-  // while(chat_section.firstChild)
   const prevMessages = chat_section.querySelectorAll('.message');
   const dateLabels = chat_section.querySelectorAll('.date-tag');
-
   prevMessages.forEach( element => element.parentElement.removeChild(element));
   dateLabels.forEach(element => element.parentElement.removeChild(element));
 
-  for (let date of dates) {
-    chat_section.append(messages[date].date_tag)
-    for (let msg of messages[date]) {
+  for (let day of messages) {
+    console.log(day)
+    chat_section.append(day.date_label)
+    for (let msg of day) {
         chat_section.append(msg.element);
         msg.element.addEventListener('click', toggleControls);
-
     }
   }
 
-  // for (msg of messages){
-  //     chat_section.appendChild(msg.element);
-  //     msg.element.addEventListener('click', toggleControls);
-  // }
 }
 
-function createDateTag(date) {
-  const date_tag = document.createElement('p');
-  date_tag.classList.add('date-tag');
+function createDateLabel(date) {
+  const date_label = document.createElement('p');
+  date_label.classList.add('date-tag');
   const month = date.toLocaleString('default', { month: 'long' });
-  // switch(date.getMonth() + 1) {
-  //   case 0:
-  //     month = "January"
-  //     break;
-  // }
-  date_tag.innerText = `${month} ${date.getDate()}, ${date.getFullYear()}`;
-  return date_tag;
+  date_label.innerText = `${month} ${date.getDate()}, ${date.getFullYear()}`;
+  return date_label;
 }
 
+/******************** */
 /* Event listeners */
+/******************** */
 
 sys_battery_input.addEventListener('input', () => {
   sys_battery.textContent = sys_battery_input.value <= 100 ? sys_battery_input.value + '%' : 100 + '%';
@@ -175,9 +170,7 @@ sys_battery_input.addEventListener('input', () => {
 })
 
 msg_form.addEventListener('submit', function createMessage(e) {
-  // Creating a new message
   e.preventDefault();
-
   const txt = msg_txt_input.value;
 
   if (txt.trim() === "")
@@ -204,9 +197,8 @@ msg_form.addEventListener('submit', function createMessage(e) {
 });
 
 
+// Form color considering source 
 source_input.addEventListener('change', () => {
-  // color setting
-
   (function (elements) {
     for (el of elements) {
       if (source_input.value === 'receiver') {
@@ -221,29 +213,30 @@ source_input.addEventListener('change', () => {
   })(msg_form.querySelectorAll('.self, .receiver'));
 });
 
+// input on system time
 sys_time_input.addEventListener('input', function () {
   sys_time.textContent = this.value;
   if (this.value === "")
     sys_time.textContent = getTimeString(new Date());
 });
 
-
+// profile picture input
 photo_input.addEventListener('input', function () {
   const img_url = URL.createObjectURL(this.files[0]);
   img_profile[0].style['background-image'] = `url(${img_url})`;
   img_profile[1].style['background-image'] = `url(${img_url})`;
 });
 
+// Receiver's name input
 name_input.addEventListener('input', function () {
   receiver_name.textContent = this.value;
-
   if (this.value === "")
     receiver_name.textContent = this.placeholder;
 });
 
+// Receiver's status input
 status_input.addEventListener('input', function () {
   receiver_status.textContent = this.value;
-
   if (this.value === "")
     receiver_status.textContent = this.placeholder;
 });
@@ -276,10 +269,10 @@ function getDateString(date) {
 
 
 function setup() {
-
   // times
   const currentDateTime = new Date();
-  sys_time_input.value = sys_time.textContent = msg_time_input.value = getTimeString(currentDateTime);
+  sys_time_input.value = sys_time.textContent = 
+  msg_time_input.value = getTimeString(currentDateTime);
 
   // batery level 
   sys_battery.textContent = sys_battery_input.value + '%';
@@ -303,9 +296,6 @@ function setup() {
 
   // source selector
   source_input.value = "self";
-
-  // message stuff
-  // msg_date_input.value = getDateString(currentDateTime);
 }
 
 function toggleControls(e) {
@@ -316,6 +306,14 @@ function toggleControls(e) {
   const delete_btn = controls.querySelector('.delete-control');
 
   controls.classList.toggle('active');
+  message.classList.toggle('selected');
+
+  message.addEventListener('blur', () => {
+    if (!delete_btn.matches(':hover')){
+        controls.classList.remove('active')
+        message.classList.remove('selected');
+      }
+  })
 
 
   edit_btn.addEventListener('click', function () {
@@ -330,17 +328,24 @@ function toggleControls(e) {
 }
 
 function deleteMessage(e) {
-  const element = e.currentTarget.parentElement.parentElement;
-  const date = element.dataset.date;
+  const element = e.currentTarget.parentElement.parentElement
 
-  const msgIndex = messages[date]
-  .indexOf(messages[date]
-  .find( msg => msg.id == element.id));
+  const date_index = messages.findIndex(day => {
+    if (day.date.getFullYear() == element.dataset.date.slice(0, 4)
+    && day.date.getMonth() + 1 == element.dataset.date.slice(5, 7)
+    && day.date.getDate() == element.dataset.date.slice(8, 10))
+      return true;
+  });
 
-  messages[date].splice(msgIndex, 1); // remove the msg object
+  const msg_index = messages[date_index]
+  .findIndex(msg => msg.id == element.id );
 
-  if (messages[date].length === 0)
-    delete messages[date];
+  // remove the msg object
+  messages[date_index].splice(msg_index, 1); 
+
+  // Remove the entire day if empty
+  if (messages[date_index].length === 0)
+    messages.splice(date_index, 1)
 
   //element.parentElement.removeChild(element); // we just need to remove it from the list, I think
   readMessages();
