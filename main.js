@@ -16,6 +16,7 @@ const receiver_name = document.querySelector('.receiver-name');
 const receiver_status = document.querySelector('.receiver-status');
 const sys_time = document.querySelector('.clock.notification-icon');
 const sys_battery = document.querySelector('.percentaje.notification-icon');
+
 const idGenerator = getNewID();
 
 class Message {
@@ -31,9 +32,9 @@ class Message {
 }
 
 const messages = [];
+new Message('self', 'hi', new Date());
 
 setup();
-
 readMessages();
 
 
@@ -45,7 +46,6 @@ function* getNewID() {
 }
 
 function insertMessage(newMessage) {      
-  
   // first message on chat
   if (messages.length === 0)
   {
@@ -80,12 +80,14 @@ function insertMessage(newMessage) {
   messages[index].date_label = createDateLabel(newMessage.date_time);
 }
 
+
 function setUpMessage(msg) {
   const message = document.createElement('div');
   message.classList.add('message', `message-${msg.source}`);
   message.setAttribute('id', msg.id);
   message.setAttribute('tabindex', "0");
   message.dataset.date = getDateString(msg.date_time);
+  message.dataset.time = getTimeString(msg.date_time);
 
   // controls section
   const controls = document.createElement('div');
@@ -141,7 +143,6 @@ function readMessages() {
   dateLabels.forEach(element => element.parentElement.removeChild(element));
 
   for (let day of messages) {
-    console.log(day)
     chat_section.append(day.date_label)
     for (let msg of day) {
         chat_section.append(msg.element);
@@ -153,7 +154,21 @@ function readMessages() {
 
 function createDateLabel(date) {
   const date_label = document.createElement('p');
+  const today = new Date();
   date_label.classList.add('date-tag');
+
+  if (getDateString(date) === getDateString(today)){
+      date_label.innerText = 'Today';
+      return date_label;
+    }
+  
+    const yersterday = new Date(today.getTime() - 24*60*60*1000);
+  
+    if (getDateString(date) === getDateString(yersterday)){
+      date_label.innerText = 'Yesterday';
+      return date_label;
+    }
+    
   const month = date.toLocaleString('default', { month: 'long' });
   date_label.innerText = `${month} ${date.getDate()}, ${date.getFullYear()}`;
   return date_label;
@@ -164,7 +179,9 @@ function createDateLabel(date) {
 /******************** */
 
 sys_battery_input.addEventListener('input', () => {
-  sys_battery.textContent = sys_battery_input.value <= 100 ? sys_battery_input.value + '%' : 100 + '%';
+  sys_battery.textContent = sys_battery_input.value <= 100 ? 
+  sys_battery_input.value + '%' : 100 + '%';
+  
   if (sys_battery_input.value === "")
     sys_battery.textContent = sys_battery_input.placeholder + '%';
 })
@@ -309,22 +326,29 @@ function toggleControls(e) {
   message.classList.toggle('selected');
 
   message.addEventListener('blur', () => {
-    if (!delete_btn.matches(':hover')){
-        controls.classList.remove('active')
-        message.classList.remove('selected');
+    if (!delete_btn.matches(':hover') && 
+        !edit_btn.matches(':hover')){
+          controls.classList.remove('active')
+          message.classList.remove('selected');
       }
   })
 
 
-  edit_btn.addEventListener('click', function () {
-    
-    const msg_text = message.querySelector('.message-text');
-    const new_text = window.prompt('Nuevo mensaje', msg_text.textContent);
-    msg_text.textContent = new_text;
-  });
-
+  edit_btn.addEventListener('click', editMessage);
   delete_btn.addEventListener('click', deleteMessage);
 
+}
+
+function editMessage(e) {
+  const element = e.currentTarget.parentElement.parentElement;
+  const day_index = messages.findIndex(day => getDateString(day.date) === element.dataset.date);
+  const message = messages[day_index].find(msg => element.id == msg.id);
+
+  source_input.value = message.source;
+  msg_date_input.value = getDateString(message.date_time);
+  
+  msg_time_input.value = element.dataset.time;
+  msg_txt_input.value = message.text;
 }
 
 function deleteMessage(e) {
