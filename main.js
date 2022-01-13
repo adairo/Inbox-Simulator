@@ -18,6 +18,7 @@ const sys_time = document.querySelector('.clock.notification-icon');
 const sys_battery = document.querySelector('.percentaje.notification-icon');
 
 const idGenerator = getNewID();
+let current_editing_message;
 
 class Message {
   constructor(source, text, date_time) {
@@ -26,13 +27,10 @@ class Message {
     this.text = text;
     this.date_time = date_time;
     this.element = setUpMessage(this);
-    insertMessage(this);
-    readMessages();
   }
 }
 
 const messages = [];
-new Message('self', 'hi', new Date());
 
 setup();
 readMessages();
@@ -83,43 +81,52 @@ function insertMessage(newMessage) {
 
 function setUpMessage(msg) {
   const message = document.createElement('div');
+  
   message.classList.add('message', `message-${msg.source}`);
   message.setAttribute('id', msg.id);
   message.setAttribute('tabindex', "0");
   message.dataset.date = getDateString(msg.date_time);
   message.dataset.time = getTimeString(msg.date_time);
-
+  
   // controls section
   const controls = document.createElement('div');
   controls.classList.add('controls');
-
+  
   // edit button
   const edit_btn = document.createElement('button');
   edit_btn.classList.add('message-control', 'edit-control');
-
+  edit_btn.addEventListener('click', () => {
+    editMessage(msg);
+    readMessages();
+  });
+  
   // edit icon
   const edit_icon = document.createElement('span');
   edit_icon.classList.add('material-icons');
   edit_icon.textContent = 'edit';
-
+  
   // delete button
   const delete_btn = document.createElement('button');
   delete_btn.classList.add('message-control', 'delete-control');
-
+  delete_btn.addEventListener('click', () => {
+    deleteMessage(msg);
+    readMessages();
+  });
+  
   const delete_icon = document.createElement('span');
   delete_icon.classList.add('material-icons');
   delete_icon.textContent = 'clear';
-
+  
   // message text
   const msg_text = document.createElement('p');
   msg_text.classList.add('message-text');
   msg_text.textContent = msg.text;
-
+  
   // time of send
   const time = document.createElement('span');
   time.classList.add('data-time');
   time.textContent = getTimeString(msg.date_time);
-
+  
   message.appendChild(controls);
   controls.appendChild(edit_btn);
   controls.appendChild(delete_btn);
@@ -127,7 +134,17 @@ function setUpMessage(msg) {
   delete_btn.appendChild(delete_icon);
   message.appendChild(msg_text);
   message.appendChild(time);
-
+  
+  message.addEventListener('click', toggleControls);
+  message.addEventListener('blur', () => {
+    // dont toggle the buttons if hovering them
+    if (!delete_btn.matches(':hover') && 
+    !edit_btn.matches(':hover')){
+      controls.classList.remove('active')
+      message.classList.remove('selected');
+    }
+  });
+  
   return message;
 }
 
@@ -209,7 +226,21 @@ msg_form.addEventListener('submit', function createMessage(e) {
     msgDateTime.setMinutes(time.slice(3, 5));
   }
 
-  new Message(source, txt, msgDateTime);
+  if (current_editing_message) {
+    // current_editing_message.source = source;
+    // current_editing_message.text = txt;
+    // current_editing_message.date_time = msgDateTime;
+    // current_editing_message.element = setUpMessage(current_editing_message);
+    // msg_txt_input.value = "";
+    // readMessages();
+    // current_editing_message = undefined;
+    // return;
+    deleteMessage(current_editing_message);
+  }
+
+  insertMessage(new Message(source, txt, msgDateTime));
+  readMessages();
+
   msg_txt_input.value = "";
 });
 
@@ -246,9 +277,10 @@ photo_input.addEventListener('input', function () {
 
 // Receiver's name input
 name_input.addEventListener('input', function () {
-  receiver_name.textContent = this.value;
+  const option = document.querySelector('.source-select option[value=receiver]');
+  receiver_name.textContent = option.innerText = this.value;
   if (this.value === "")
-    receiver_name.textContent = this.placeholder;
+    receiver_name.textContent = option.innerText = this.placeholder;
 });
 
 // Receiver's status input
@@ -313,66 +345,62 @@ function setup() {
 
   // source selector
   source_input.value = "self";
+  const option = document.querySelector('.source-select option[value=receiver]');
+  option.innerText = receiver_name.textContent;
 }
 
 function toggleControls(e) {
 
-  const message = e.currentTarget;
-  const controls = message.querySelector('.controls');
-  const edit_btn = controls.querySelector('.edit-control');
-  const delete_btn = controls.querySelector('.delete-control');
+  const element = e.currentTarget;
+  const controls = element.querySelector('.controls');
 
   controls.classList.toggle('active');
-  message.classList.toggle('selected');
-
-  message.addEventListener('blur', () => {
-    if (!delete_btn.matches(':hover') && 
-        !edit_btn.matches(':hover')){
-          controls.classList.remove('active')
-          message.classList.remove('selected');
-      }
-  })
-
-
-  edit_btn.addEventListener('click', editMessage);
-  delete_btn.addEventListener('click', deleteMessage);
-
+  element.classList.toggle('selected');
 }
-
-function editMessage(e) {
-  const element = e.currentTarget.parentElement.parentElement;
-  const day_index = messages.findIndex(day => getDateString(day.date) === element.dataset.date);
-  const message = messages[day_index].find(msg => element.id == msg.id);
-
-  source_input.value = message.source;
-  msg_date_input.value = getDateString(message.date_time);
   
-  msg_time_input.value = element.dataset.time;
-  msg_txt_input.value = message.text;
-}
 
-function deleteMessage(e) {
-  const element = e.currentTarget.parentElement.parentElement
+  
 
-  const date_index = messages.findIndex(day => {
-    if (day.date.getFullYear() == element.dataset.date.slice(0, 4)
-    && day.date.getMonth() + 1 == element.dataset.date.slice(5, 7)
-    && day.date.getDate() == element.dataset.date.slice(8, 10))
+function getMessageByElement(element) {
+  const date_index = messages
+  .findIndex(day => {
+    console.log(day)
+    if (getDateString(day.date) === element.dataset.date)
       return true;
   });
 
-  const msg_index = messages[date_index]
-  .findIndex(msg => msg.id == element.id );
+  const message_index = messages[date_index].findIndex(msg => element.id == msg.id);
 
+  return {
+    message: messages[date_index][message_index],
+    messageIndex: message_index,
+    dateIndex: date_index 
+  };
+}
+
+function editMessage(msg) {
+  console.log(msg);
+  // source_input.value = msg.message.source;
+  // source_input.dispatchEvent(new Event('change'));
+  // msg_date_input.value = getDateString(msg.message.date_time);
+  // msg_time_input.value = getTimeString(msg.message.date_time);
+  // msg_txt_input.value = msg.message.text;
+  // current_editing_message = msg.message;
+}
+
+function deleteMessage(message) {
   // remove the msg object
-  messages[date_index].splice(msg_index, 1); 
+  const date = messages.findIndex(day => {
+    if (getDateString(day.date) === getDateString(message.date_time))
+      return true;
+  });
 
+  messages[date].splice(messages[date]
+    .findIndex(msg => msg.id === message.id), 1);
+  
   // Remove the entire day if empty
-  if (messages[date_index].length === 0)
-    messages.splice(date_index, 1)
-
-  //element.parentElement.removeChild(element); // we just need to remove it from the list, I think
-  readMessages();
+  if (messages[date].length === 0)
+  messages.splice(date, 1)
 }
 
 
