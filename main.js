@@ -31,6 +31,8 @@ class Message {
 }
 
 const messages = [];
+// insertMessage(new Message('self', 'hola', new Date(2022, 0, 14, 7, 40)));
+// insertMessage(new Message('self', 'que tal', new Date(2022, 0, 14, 8, 40)));
 
 setup();
 readMessages();
@@ -47,7 +49,7 @@ function insertMessage(newMessage) {
   // first message on chat
   if (messages.length === 0)
   {
-    messages.push([newMessage]);
+    messages.push(new Array(newMessage));
     messages[0].date = newMessage.date_time;
     messages[0].date_label = createDateLabel(newMessage.date_time);
     return;
@@ -55,13 +57,15 @@ function insertMessage(newMessage) {
   
   // if that day already exists
   if (messages.length >= 1) {
-    for (let day of messages){
-      if (day.date.getFullYear() === newMessage.date_time.getFullYear()
-          && day.date.getMonth() === newMessage.date_time.getMonth()
-          && day.date.getDate() === newMessage.date_time.getDate()) {
-            day.push(newMessage)
-            return;
-      }
+
+    const day_index = messages.findIndex(day => {
+      if (getDateString(day.date) === getDateString(newMessage.date_time))
+        return true;
+    });
+
+    if(day_index != -1){ // I should remove this conditional
+      messages[day_index].push(newMessage)
+      return;
     }
   }
 

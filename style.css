@@ -37,6 +37,7 @@ body {
 
 
 .screen-container {
+    background-image: url(background.png);
     position: relative;
     display: flex;
     flex-direction: column;
