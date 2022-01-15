@@ -31,8 +31,8 @@ class Message {
 }
 
 const messages = [];
-// insertMessage(new Message('self', 'hola', new Date(2022, 0, 14, 7, 40)));
-// insertMessage(new Message('self', 'que tal', new Date(2022, 0, 14, 8, 40)));
+// insertMessage(new Message('self', '1', new Date(2022, 0, 14, 7, 40, 4)));
+// insertMessage(new Message('self', '2', new Date(2022, 0, 14, 7, 40, 2)));
 
 setup();
 readMessages();
@@ -45,35 +45,42 @@ function* getNewID() {
   }
 }
 
-function insertMessage(newMessage) {      
+function insertMessage(newMessage) {
   // first message on chat
-  if (messages.length === 0)
-  {
+  if (messages.length === 0) {
     messages.push(new Array(newMessage));
     messages[0].date = newMessage.date_time;
     messages[0].date_label = createDateLabel(newMessage.date_time);
     return;
   }
-  
-  // if that day already exists
+
+  // there exists other messages
   if (messages.length >= 1) {
 
     const day_index = messages.findIndex(day => {
       if (getDateString(day.date) === getDateString(newMessage.date_time))
         return true;
     });
-
-    if(day_index != -1){ // I should remove this conditional
-      messages[day_index].push(newMessage)
+    // if that day already exists
+    if (day_index != -1) {
+      // Find the correct position
+      let msg_index = 0;
+      while (msg_index < messages[day_index].length &&
+        newMessage.date_time.getTime() >
+        messages[day_index][msg_index].date_time.getTime()) {
+          msg_index++;
+      }
+      messages[day_index].splice(msg_index, 0, newMessage);
       return;
     }
   }
 
-  // Search for the position to insert the message
+  // Search the position of the new Day
   let index = 0;
-  while(index < messages.length &&
-    newMessage.date_time.getTime() >= messages[index].date.getTime()) {
-    index++;
+  while (index < messages.length &&
+    newMessage.date_time.getTime() >= 
+    messages[index].date.getTime()) {
+      index++;
   }
 
   // Insert it 
@@ -85,17 +92,17 @@ function insertMessage(newMessage) {
 
 function setUpMessage(msg) {
   const message = document.createElement('div');
-  
-  message.classList.add('message', `message-${msg.source}`);
+
+  message.classList.add('message', `message-${msg.source}`, 'shadow');
   message.setAttribute('id', msg.id);
   message.setAttribute('tabindex', "0");
   message.dataset.date = getDateString(msg.date_time);
   message.dataset.time = getTimeString(msg.date_time);
-  
+
   // controls section
   const controls = document.createElement('div');
   controls.classList.add('controls');
-  
+
   // edit button
   const edit_btn = document.createElement('button');
   edit_btn.classList.add('message-control', 'edit-control');
@@ -103,12 +110,12 @@ function setUpMessage(msg) {
     editMessage(msg);
     readMessages();
   });
-  
+
   // edit icon
   const edit_icon = document.createElement('span');
   edit_icon.classList.add('material-icons');
   edit_icon.textContent = 'edit';
-  
+
   // delete button
   const delete_btn = document.createElement('button');
   delete_btn.classList.add('message-control', 'delete-control');
@@ -116,21 +123,21 @@ function setUpMessage(msg) {
     deleteMessage(msg);
     readMessages();
   });
-  
+
   const delete_icon = document.createElement('span');
   delete_icon.classList.add('material-icons');
   delete_icon.textContent = 'clear';
-  
+
   // message text
   const msg_text = document.createElement('p');
   msg_text.classList.add('message-text');
   msg_text.textContent = msg.text;
-  
+
   // time of send
   const time = document.createElement('span');
   time.classList.add('data-time');
   time.textContent = getTimeString(msg.date_time);
-  
+
   message.appendChild(controls);
   controls.appendChild(edit_btn);
   controls.appendChild(delete_btn);
@@ -138,36 +145,36 @@ function setUpMessage(msg) {
   delete_btn.appendChild(delete_icon);
   message.appendChild(msg_text);
   message.appendChild(time);
-  
+
   message.addEventListener('click', toggleControls);
   message.addEventListener('blur', () => {
     // dont toggle the buttons if hovering them
-    if (!delete_btn.matches(':hover') && 
-    !edit_btn.matches(':hover')){
+    if (!delete_btn.matches(':hover') &&
+      !edit_btn.matches(':hover')) {
       controls.classList.remove('active')
       message.classList.remove('selected');
     }
   });
-  
+
   return message;
 }
 
 
 function readMessages() {
   document.querySelector('.security-info')
-  .classList.toggle('show', messages.length === 0)
+    .classList.toggle('show', messages.length === 0)
 
   // clear the chat-section
   const prevMessages = chat_section.querySelectorAll('.message');
   const dateLabels = chat_section.querySelectorAll('.date-tag');
-  prevMessages.forEach( element => element.parentElement.removeChild(element));
+  prevMessages.forEach(element => element.parentElement.removeChild(element));
   dateLabels.forEach(element => element.parentElement.removeChild(element));
 
   for (let day of messages) {
     chat_section.append(day.date_label)
     for (let msg of day) {
-        chat_section.append(msg.element);
-        msg.element.addEventListener('click', toggleControls);
+      chat_section.append(msg.element);
+      msg.element.addEventListener('click', toggleControls);
     }
   }
 
@@ -178,18 +185,18 @@ function createDateLabel(date) {
   const today = new Date();
   date_label.classList.add('date-tag');
 
-  if (getDateString(date) === getDateString(today)){
-      date_label.innerText = 'Today';
-      return date_label;
-    }
-  
-    const yersterday = new Date(today.getTime() - 24*60*60*1000);
-  
-    if (getDateString(date) === getDateString(yersterday)){
-      date_label.innerText = 'Yesterday';
-      return date_label;
-    }
-    
+  if (getDateString(date) === getDateString(today)) {
+    date_label.innerText = 'Today';
+    return date_label;
+  }
+
+  const yersterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+
+  if (getDateString(date) === getDateString(yersterday)) {
+    date_label.innerText = 'Yesterday';
+    return date_label;
+  }
+
   const month = date.toLocaleString('default', { month: 'long' });
   date_label.innerText = `${month} ${date.getDate()}, ${date.getFullYear()}`;
   return date_label;
@@ -200,9 +207,9 @@ function createDateLabel(date) {
 /******************** */
 
 sys_battery_input.addEventListener('input', () => {
-  sys_battery.textContent = sys_battery_input.value <= 100 ? 
-  sys_battery_input.value + '%' : 100 + '%';
-  
+  sys_battery.textContent = sys_battery_input.value <= 100 ?
+    sys_battery_input.value + '%' : 100 + '%';
+
   if (sys_battery_input.value === "")
     sys_battery.textContent = sys_battery_input.placeholder + '%';
 })
@@ -224,7 +231,7 @@ msg_form.addEventListener('submit', function createMessage(e) {
     msgDateTime.setMonth(Number(date.slice(5, 7)) - 1);
     msgDateTime.setDate(date.slice(8, 10));
   }
-  
+
   if (time !== "") {
     msgDateTime.setHours(time.slice(0, 2));
     msgDateTime.setMinutes(time.slice(3, 5));
@@ -324,8 +331,7 @@ function getDateString(date) {
 function setup() {
   // times
   const currentDateTime = new Date();
-  sys_time_input.value = sys_time.textContent = 
-  msg_time_input.value = getTimeString(currentDateTime);
+  sys_time.textContent = getTimeString(currentDateTime);
 
   // batery level 
   sys_battery.textContent = sys_battery_input.value + '%';
@@ -361,24 +367,24 @@ function toggleControls(e) {
   controls.classList.toggle('active');
   element.classList.toggle('selected');
 }
-  
 
-  
+
+
 
 function getMessageByElement(element) {
   const date_index = messages
-  .findIndex(day => {
-    console.log(day)
-    if (getDateString(day.date) === element.dataset.date)
-      return true;
-  });
+    .findIndex(day => {
+      console.log(day)
+      if (getDateString(day.date) === element.dataset.date)
+        return true;
+    });
 
   const message_index = messages[date_index].findIndex(msg => element.id == msg.id);
 
   return {
     message: messages[date_index][message_index],
     messageIndex: message_index,
-    dateIndex: date_index 
+    dateIndex: date_index
   };
 }
 
@@ -401,17 +407,8 @@ function deleteMessage(message) {
 
   messages[date].splice(messages[date]
     .findIndex(msg => msg.id === message.id), 1);
-  
+
   // Remove the entire day if empty
   if (messages[date].length === 0)
-  messages.splice(date, 1)
+    messages.splice(date, 1)
 }
-
-
-
-
-
-
-
-
-
