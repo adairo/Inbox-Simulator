@@ -66,7 +66,7 @@ function insertMessage(newMessage) {
       // Find the correct position
       let msg_index = 0;
       while (msg_index < messages[day_index].length &&
-        newMessage.date_time.getTime() >
+        newMessage.date_time.getTime() >=
         messages[day_index][msg_index].date_time.getTime()) {
           msg_index++;
       }
@@ -222,6 +222,8 @@ msg_form.addEventListener('submit', function createMessage(e) {
     return;
 
   const msgDateTime = new Date();
+  
+
   const source = source_input.value
   const date = msg_date_input.value;
   const time = msg_time_input.value;
@@ -235,18 +237,21 @@ msg_form.addEventListener('submit', function createMessage(e) {
   if (time !== "") {
     msgDateTime.setHours(time.slice(0, 2));
     msgDateTime.setMinutes(time.slice(3, 5));
+    msgDateTime.setSeconds(0);
+    msgDateTime.setMilliseconds(0);
   }
 
   if (current_editing_message) {
-    // current_editing_message.source = source;
-    // current_editing_message.text = txt;
-    // current_editing_message.date_time = msgDateTime;
-    // current_editing_message.element = setUpMessage(current_editing_message);
-    // msg_txt_input.value = "";
-    // readMessages();
-    // current_editing_message = undefined;
-    // return;
-    deleteMessage(current_editing_message);
+    current_editing_message.source = source;
+    current_editing_message.text = txt;
+    current_editing_message.element = setUpMessage(current_editing_message);
+    
+    current_editing_message = undefined;
+    add_msg_button.textContent = "Add Message";
+    msg_txt_input.value = "";
+    msg_date_input.disabled = msg_time_input.disabled = false;
+    readMessages();
+    return;    
   }
 
   insertMessage(new Message(source, txt, msgDateTime));
@@ -389,13 +394,14 @@ function getMessageByElement(element) {
 }
 
 function editMessage(msg) {
-  console.log(msg);
-  // source_input.value = msg.message.source;
-  // source_input.dispatchEvent(new Event('change'));
-  // msg_date_input.value = getDateString(msg.message.date_time);
-  // msg_time_input.value = getTimeString(msg.message.date_time);
-  // msg_txt_input.value = msg.message.text;
-  // current_editing_message = msg.message;
+  source_input.value = msg.source;
+  source_input.dispatchEvent(new Event('change'));
+  msg_date_input.value = getDateString(msg.date_time);
+  msg_time_input.value = getTimeString(msg.date_time);
+  msg_txt_input.value = msg.text;
+  msg_date_input.disabled = msg_time_input.disabled = true;
+  add_msg_button.textContent = "Save changes"
+  current_editing_message = msg;
 }
 
 function deleteMessage(message) {
