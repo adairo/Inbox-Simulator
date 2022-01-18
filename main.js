@@ -68,7 +68,7 @@ function insertMessage(newMessage) {
       while (msg_index < messages[day_index].length &&
         newMessage.date_time.getTime() >=
         messages[day_index][msg_index].date_time.getTime()) {
-          msg_index++;
+        msg_index++;
       }
       messages[day_index].splice(msg_index, 0, newMessage);
       return;
@@ -78,9 +78,9 @@ function insertMessage(newMessage) {
   // Search the position of the new Day
   let index = 0;
   while (index < messages.length &&
-    newMessage.date_time.getTime() >= 
+    newMessage.date_time.getTime() >=
     messages[index].date.getTime()) {
-      index++;
+    index++;
   }
 
   // Insert it 
@@ -93,9 +93,8 @@ function insertMessage(newMessage) {
 function setUpMessage(msg) {
   const message = document.createElement('div');
 
-  message.classList.add('message', `message-${msg.source}`, 'shadow');
+  message.classList.add('message', `message-${msg.source}`, 'shadow', 'double-line');
   message.setAttribute('id', msg.id);
-  message.setAttribute('tabindex', "0");
   message.dataset.date = getDateString(msg.date_time);
   message.dataset.time = getTimeString(msg.date_time);
 
@@ -119,32 +118,43 @@ function setUpMessage(msg) {
   // delete button
   const delete_btn = document.createElement('button');
   delete_btn.classList.add('message-control', 'delete-control');
+  const delete_icon = document.createElement('span');
+  delete_icon.classList.add('material-icons');
+  delete_icon.textContent = 'delete';
+
   delete_btn.addEventListener('click', () => {
     deleteMessage(msg);
     readMessages();
   });
 
-  const delete_icon = document.createElement('span');
-  delete_icon.classList.add('material-icons');
-  delete_icon.textContent = 'clear';
-
   // message text
   const msg_text = document.createElement('p');
   msg_text.classList.add('message-text');
+  msg_text.setAttribute('contenteditable', 'true');
   msg_text.textContent = msg.text;
 
   // time of send
   const time = document.createElement('span');
+  time.setAttribute('contenteditable', 'false')
   time.classList.add('data-time');
   time.textContent = getTimeString(msg.date_time);
+
+  // double check
+  const check_icon = document.createElement('img');
+  check_icon.classList.add('double-check');
+  check_icon.setAttribute('src', 'resources/icons/double-check.svg');
+  check_icon.setAttribute('width', "16");
+
+  
 
   message.appendChild(controls);
   controls.appendChild(edit_btn);
   controls.appendChild(delete_btn);
   edit_btn.appendChild(edit_icon);
   delete_btn.appendChild(delete_icon);
+  msg_text.appendChild(time);
+  time.appendChild(check_icon);
   message.appendChild(msg_text);
-  message.appendChild(time);
 
   message.addEventListener('click', toggleControls);
   message.addEventListener('blur', () => {
@@ -222,7 +232,7 @@ msg_form.addEventListener('submit', function createMessage(e) {
     return;
 
   const msgDateTime = new Date();
-  
+
 
   const source = source_input.value
   const date = msg_date_input.value;
@@ -245,13 +255,13 @@ msg_form.addEventListener('submit', function createMessage(e) {
     current_editing_message.source = source;
     current_editing_message.text = txt;
     current_editing_message.element = setUpMessage(current_editing_message);
-    
+
     current_editing_message = undefined;
     add_msg_button.textContent = "Add Message";
     msg_txt_input.value = "";
     msg_date_input.disabled = msg_time_input.disabled = false;
     readMessages();
-    return;    
+    return;
   }
 
   insertMessage(new Message(source, txt, msgDateTime));
@@ -306,16 +316,29 @@ status_input.addEventListener('input', function () {
     receiver_status.textContent = this.placeholder;
 });
 
-function getTimeString(date) {
+function getTimeString(date, format = 12) {
   let hours = date.getHours();
   let minutes = date.getMinutes();
+  let AM = false;
+
+  if (format === 12) {
+
+    if (hours >= 0 && hours <= 11) 
+      AM = true;
+      
+    if (hours === 0)
+      hours = 12;
+
+    if (hours > 12)
+      hours %= 12;
+  }
 
   if (hours < 10)
     hours = "0" + hours;
   if (minutes < 10)
     minutes = "0" + minutes;
 
-  return `${hours}:${minutes}`;
+  return `${hours}:${minutes} ${AM ? 'AM': 'PM'}`;
 }
 
 function getDateString(date) {
@@ -418,3 +441,4 @@ function deleteMessage(message) {
   if (messages[date].length === 0)
     messages.splice(date, 1)
 }
+

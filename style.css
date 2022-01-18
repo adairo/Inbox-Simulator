@@ -7,11 +7,12 @@
 :root {
     --primary-color: #008069;
     --screen-height: 97vh;
+    
     --screen-width: calc(var(--screen-height) * 0.46);
     
 
     /* --screen-width: 720px;
-    --screen-height: 1280px; */
+    ; */
 }
 
 html {
@@ -33,7 +34,6 @@ body {
     padding: 1rem;
     flex-wrap: wrap;
 }
-
 
 
 .screen-container {
@@ -286,8 +286,9 @@ body {
     margin: 0.07em 0;
     position: relative;
     border-radius: 1.2rem;
-    padding: 1.3% 2% 1.3% 2%;
+    padding: 1.3% 2% 0.8% 2.6%;
     transition: all 200ms ease-in-out;
+    display: flex;
 }
 
 .message.selected {
@@ -298,23 +299,32 @@ body {
 .message-text {
     margin: 0;
     padding: 0;
-    min-height: 100%;
-    font-size: 2.1rem;
+    font-size: 1.17em;
     font-weight: 400;
-    display: inline;
-    text-align: left; 
-    white-space: pre-line;
+    white-space: pre-line;    
 }
 
 .data-time {
-    
-    color: #667781;
-    font-size: 0.7em;
-    float: right;
-    margin-left: 0.3em;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 0.0em;
+    color: #667781d0;
+    font-size: 0.71em;
+    font-weight: 500;
+    align-self: flex-end;
     position: relative;
-    right: -0.2em;
-    bottom: -1em;
+    bottom: -0.45em;
+    padding-left: 1em;
+    
+    padding-bottom: 0.4em;
+    float: right;
+    
+}
+
+.double-check {
+    margin-left: 0.3em;
+    margin-bottom: -0.3em;
+    color: #788d99d0;
+    height: 1.4em;
 }
 
 .controls {
