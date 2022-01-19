@@ -28,14 +28,50 @@ class Message {
     this.date_time = date_time;
     this.element = setUpMessage(this);
   }
+
+  static *getNewID() {
+    let id = 0;
+    while (true)
+      yield ++id;
+  }
 }
 
-const messages = [];
-// insertMessage(new Message('self', '1', new Date(2022, 0, 14, 7, 40, 4)));
-// insertMessage(new Message('self', '2', new Date(2022, 0, 14, 7, 40, 2)));
+class Day {
+  constructor(date, message) {
+    this.date = date;
+    this.messages = new Array(message);
+  }
 
-setup();
-readMessages();
+  insertMessage(newMessage) {
+    let msg_index = 0;
+    while (msg_index < this.messages.length &&
+      newMessage.date_time.getTime() >=
+      this.messages[msg_index].date_time.getTime()) {
+      msg_index++;
+    }
+    this.messages.splice(msg_index, 0, newMessage);
+  }
+
+  get dateLabel() {
+    const date_label = document.createElement('p');
+    const today = new Date();
+    date_label.classList.add('date-tag');
+
+    if (getDateString(this.date) === getDateString(today)) {
+      date_label.textContent = 'Today';
+      return date_label;
+    }
+  }
+
+
+}
+
+  const messages = [];
+  // insertMessage(new Message('self', '1', new Date(2022, 0, 14, 7, 40, 4)));
+  // insertMessage(new Message('self', '2', new Date(2022, 0, 14, 7, 40, 2)));
+
+  setup();
+  readMessages();
 
 
 function* getNewID() {
@@ -95,6 +131,7 @@ function setUpMessage(msg) {
 
   message.classList.add('message', `message-${msg.source}`, 'shadow', 'double-line');
   message.setAttribute('id', msg.id);
+  message.setAttribute('tabindex', 0);
   message.dataset.date = getDateString(msg.date_time);
   message.dataset.time = getTimeString(msg.date_time);
 
@@ -130,7 +167,7 @@ function setUpMessage(msg) {
   // message text
   const msg_text = document.createElement('p');
   msg_text.classList.add('message-text');
-  msg_text.setAttribute('contenteditable', 'true');
+  // msg_text.setAttribute('contenteditable', 'true');
   msg_text.textContent = msg.text;
 
   // time of send
@@ -145,7 +182,7 @@ function setUpMessage(msg) {
   check_icon.setAttribute('src', 'resources/icons/double-check.svg');
   check_icon.setAttribute('width', "16");
 
-  
+
 
   message.appendChild(controls);
   controls.appendChild(edit_btn);
@@ -323,9 +360,10 @@ function getTimeString(date, format = 12) {
 
   if (format === 12) {
 
-    if (hours >= 0 && hours <= 11) 
+    if (hours >= 0 && hours <= 11)
       AM = true;
-      
+
+
     if (hours === 0)
       hours = 12;
 
@@ -338,7 +376,9 @@ function getTimeString(date, format = 12) {
   if (minutes < 10)
     minutes = "0" + minutes;
 
-  return `${hours}:${minutes} ${AM ? 'AM': 'PM'}`;
+  if (format === 12)
+    return `${hours}:${minutes} ${AM ? 'AM' : 'PM'}`;
+  return `${hours}:${minutes}`;
 }
 
 function getDateString(date) {
@@ -420,7 +460,7 @@ function editMessage(msg) {
   source_input.value = msg.source;
   source_input.dispatchEvent(new Event('change'));
   msg_date_input.value = getDateString(msg.date_time);
-  msg_time_input.value = getTimeString(msg.date_time);
+  msg_time_input.value = getTimeString(msg.date_time, 24);
   msg_txt_input.value = msg.text;
   msg_date_input.disabled = msg_time_input.disabled = true;
   add_msg_button.textContent = "Save changes"
