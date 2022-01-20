@@ -21,232 +21,269 @@ const idGenerator = getNewID();
 let current_editing_message;
 
 class Message {
-  constructor(source, text, date_time) {
-    this.id = idGenerator.next().value;
-    this.source = source;
-    this.text = text;
-    this.date_time = date_time;
-    this.element = setUpMessage(this);
-  }
-
-  static *getNewID() {
-    let id = 0;
-    while (true)
-      yield ++id;
-  }
+   constructor(source, text, date_time) {
+      this.id = idGenerator.next().value;
+      this.source = source;
+      this.text = text;
+      this.date_time = date_time;
+      this.element = setUpMessage(this);
+   }
 }
 
 class Day {
-  constructor(date, message) {
-    this.date = date;
-    this.messages = new Array(message);
-  }
+   constructor(message) {
+      this.date = message.date_time;
+      this.messages = new Array(message);
+   }
 
-  insertMessage(newMessage) {
-    let msg_index = 0;
-    while (msg_index < this.messages.length &&
-      newMessage.date_time.getTime() >=
-      this.messages[msg_index].date_time.getTime()) {
-      msg_index++;
-    }
-    this.messages.splice(msg_index, 0, newMessage);
-  }
+   insertMessage(newMessage) {
+      let msg_index = 0;
+      while (msg_index < this.messages.length &&
+         newMessage.date_time.getTime() >=
+         this.messages[msg_index].date_time.getTime()) {
+         msg_index++;
+      }
+      this.messages.splice(msg_index, 0, newMessage);
+   }
 
-  get dateLabel() {
-    const date_label = document.createElement('p');
-    const today = new Date();
-    date_label.classList.add('date-tag');
+   get dateLabel() {
+      const date_label = document.createElement('p');
+      const today = new Date();
+      date_label.classList.add('date-tag');
 
-    if (getDateString(this.date) === getDateString(today)) {
-      date_label.textContent = 'Today';
+      if (getDateString(this.date) === getDateString(today)) {
+         date_label.textContent = 'Today';
+         return date_label;
+      }
+
+      const yersterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+
+      if (getDateString(date) === getDateString(yersterday)) {
+         date_label.innerText = 'Yesterday';
+         return date_label;
+      }
+
+      const month = date.toLocaleString('default', { month: 'long' });
+      date_label.innerText = `${month} ${date.getDate()}, ${date.getFullYear()}`;
       return date_label;
-    }
-  }
-
-
+   }
 }
 
-  const messages = [];
-  // insertMessage(new Message('self', '1', new Date(2022, 0, 14, 7, 40, 4)));
-  // insertMessage(new Message('self', '2', new Date(2022, 0, 14, 7, 40, 2)));
+class Chat {
+   constructor(receiver) {
+      this.receiver = receiver;
+      this.days = new Array();
+   }
 
-  setup();
-  readMessages();
+   insertMessage(newMessage) {
+      // is the first message of the entire chat?
+      if (this.days.length === 0) {
+         this.days.push(new Day(newMessages))
+         return;
+      }
+
+      // Does that day exist on the chat?
+      const day = this.days.find(day => {
+         if (getDateString(day.date) === getDateString(newMessage.date_time)) {
+            day_msg.insertMessage(newMessage);
+            return true;
+         }
+      });
+
+      if (day)
+         return;
+
+      // Where should we insert the new Day
+      let day_index = 0;
+      while (day_index < this.days.length &&
+         newMessage.date_time.getTime() >=
+         this.days[day_index].date.getTime()) {
+         index++;
+      }
+
+      this.days.splice(day_index, 0, new Day(newMessage));
+   }
+}
+
+const messages = [];
+
+setup();
+readMessages();
 
 
 function* getNewID() {
-  let id = 0;
-  while (true) {
-    yield ++id;
-  }
+   let id = 0;
+   while (true) {
+      yield ++id;
+   }
 }
 
 function insertMessage(newMessage) {
-  // first message on chat
-  if (messages.length === 0) {
-    messages.push(new Array(newMessage));
-    messages[0].date = newMessage.date_time;
-    messages[0].date_label = createDateLabel(newMessage.date_time);
-    return;
-  }
-
-  // there exists other messages
-  if (messages.length >= 1) {
-
-    const day_index = messages.findIndex(day => {
-      if (getDateString(day.date) === getDateString(newMessage.date_time))
-        return true;
-    });
-    // if that day already exists
-    if (day_index != -1) {
-      // Find the correct position
-      let msg_index = 0;
-      while (msg_index < messages[day_index].length &&
-        newMessage.date_time.getTime() >=
-        messages[day_index][msg_index].date_time.getTime()) {
-        msg_index++;
-      }
-      messages[day_index].splice(msg_index, 0, newMessage);
+   // first message on chat
+   if (messages.length === 0) {
+      messages.push(new Array(newMessage));
+      messages[0].date = newMessage.date_time;
+      messages[0].date_label = createDateLabel(newMessage.date_time);
       return;
-    }
-  }
+   }
 
-  // Search the position of the new Day
-  let index = 0;
-  while (index < messages.length &&
-    newMessage.date_time.getTime() >=
-    messages[index].date.getTime()) {
-    index++;
-  }
+   // there exists other messages
+   if (messages.length >= 1) {
 
-  // Insert it 
-  messages.splice(index, 0, [newMessage]);
-  messages[index].date = newMessage.date_time;
-  messages[index].date_label = createDateLabel(newMessage.date_time);
+      const day_index = messages.findIndex(day => {
+         if (getDateString(day.date) === getDateString(newMessage.date_time))
+            return true;
+      });
+      // if that day already exists
+      if (day_index != -1) {
+         // Find the correct position
+         let msg_index = 0;
+         while (msg_index < messages[day_index].length &&
+            newMessage.date_time.getTime() >=
+            messages[day_index][msg_index].date_time.getTime()) {
+            msg_index++;
+         }
+         messages[day_index].splice(msg_index, 0, newMessage);
+         return;
+      }
+   }
+
+   // Search the position of the new Day
+   let index = 0;
+   while (index < messages.length &&
+      newMessage.date_time.getTime() >=
+      messages[index].date.getTime()) {
+      index++;
+   }
+
+   // Insert it 
+   messages.splice(index, 0, [newMessage]);
+   messages[index].date = newMessage.date_time;
+   messages[index].date_label = createDateLabel(newMessage.date_time);
 }
 
 
 function setUpMessage(msg) {
-  const message = document.createElement('div');
+   const message = document.createElement('div');
 
-  message.classList.add('message', `message-${msg.source}`, 'shadow', 'double-line');
-  message.setAttribute('id', msg.id);
-  message.setAttribute('tabindex', 0);
-  message.dataset.date = getDateString(msg.date_time);
-  message.dataset.time = getTimeString(msg.date_time);
+   message.classList.add('message', `message-${msg.source}`, 'shadow', 'double-line');
+   message.setAttribute('id', msg.id);
+   message.setAttribute('tabindex', 0);
+   message.dataset.date = getDateString(msg.date_time);
+   message.dataset.time = getTimeString(msg.date_time);
 
-  // controls section
-  const controls = document.createElement('div');
-  controls.classList.add('controls');
+   // controls section
+   const controls = document.createElement('div');
+   controls.classList.add('controls');
 
-  // edit button
-  const edit_btn = document.createElement('button');
-  edit_btn.classList.add('message-control', 'edit-control');
-  edit_btn.addEventListener('click', () => {
-    editMessage(msg);
-    readMessages();
-  });
+   // edit button
+   const edit_btn = document.createElement('button');
+   edit_btn.classList.add('message-control', 'edit-control');
+   edit_btn.addEventListener('click', () => {
+      editMessage(msg);
+      readMessages();
+   });
 
-  // edit icon
-  const edit_icon = document.createElement('span');
-  edit_icon.classList.add('material-icons');
-  edit_icon.textContent = 'edit';
+   // edit icon
+   const edit_icon = document.createElement('span');
+   edit_icon.classList.add('material-icons');
+   edit_icon.textContent = 'edit';
 
-  // delete button
-  const delete_btn = document.createElement('button');
-  delete_btn.classList.add('message-control', 'delete-control');
-  const delete_icon = document.createElement('span');
-  delete_icon.classList.add('material-icons');
-  delete_icon.textContent = 'delete';
+   // delete button
+   const delete_btn = document.createElement('button');
+   delete_btn.classList.add('message-control', 'delete-control');
+   const delete_icon = document.createElement('span');
+   delete_icon.classList.add('material-icons');
+   delete_icon.textContent = 'delete';
 
-  delete_btn.addEventListener('click', () => {
-    deleteMessage(msg);
-    readMessages();
-  });
+   delete_btn.addEventListener('click', () => {
+      deleteMessage(msg);
+      readMessages();
+   });
 
-  // message text
-  const msg_text = document.createElement('p');
-  msg_text.classList.add('message-text');
-  // msg_text.setAttribute('contenteditable', 'true');
-  msg_text.textContent = msg.text;
+   // message text
+   const msg_text = document.createElement('p');
+   msg_text.classList.add('message-text');
+   // msg_text.setAttribute('contenteditable', 'true');
+   msg_text.textContent = msg.text;
 
-  // time of send
-  const time = document.createElement('span');
-  time.setAttribute('contenteditable', 'false')
-  time.classList.add('data-time');
-  time.textContent = getTimeString(msg.date_time);
+   // time of send
+   const time = document.createElement('span');
+   time.setAttribute('contenteditable', 'false')
+   time.classList.add('data-time');
+   time.textContent = getTimeString(msg.date_time);
 
-  // double check
-  const check_icon = document.createElement('img');
-  check_icon.classList.add('double-check');
-  check_icon.setAttribute('src', 'resources/icons/double-check.svg');
-  check_icon.setAttribute('width', "16");
+   // double check
+   const check_icon = document.createElement('img');
+   check_icon.classList.add('double-check');
+   check_icon.setAttribute('src', 'resources/icons/double-check.svg');
+   check_icon.setAttribute('width', "16");
 
 
 
-  message.appendChild(controls);
-  controls.appendChild(edit_btn);
-  controls.appendChild(delete_btn);
-  edit_btn.appendChild(edit_icon);
-  delete_btn.appendChild(delete_icon);
-  msg_text.appendChild(time);
-  time.appendChild(check_icon);
-  message.appendChild(msg_text);
+   message.appendChild(controls);
+   controls.appendChild(edit_btn);
+   controls.appendChild(delete_btn);
+   edit_btn.appendChild(edit_icon);
+   delete_btn.appendChild(delete_icon);
+   msg_text.appendChild(time);
+   time.appendChild(check_icon);
+   message.appendChild(msg_text);
 
-  message.addEventListener('click', toggleControls);
-  message.addEventListener('blur', () => {
-    // dont toggle the buttons if hovering them
-    if (!delete_btn.matches(':hover') &&
-      !edit_btn.matches(':hover')) {
-      controls.classList.remove('active')
-      message.classList.remove('selected');
-    }
-  });
+   message.addEventListener('click', toggleControls);
+   message.addEventListener('blur', () => {
+      // dont toggle the buttons if hovering them
+      if (!delete_btn.matches(':hover') &&
+         !edit_btn.matches(':hover')) {
+         controls.classList.remove('active')
+         message.classList.remove('selected');
+      }
+   });
 
-  return message;
+   return message;
 }
 
 
 function readMessages() {
-  document.querySelector('.security-info')
-    .classList.toggle('show', messages.length === 0)
+   document.querySelector('.security-info')
+      .classList.toggle('show', messages.length === 0)
 
-  // clear the chat-section
-  const prevMessages = chat_section.querySelectorAll('.message');
-  const dateLabels = chat_section.querySelectorAll('.date-tag');
-  prevMessages.forEach(element => element.parentElement.removeChild(element));
-  dateLabels.forEach(element => element.parentElement.removeChild(element));
+   // clear the chat-section
+   const prevMessages = chat_section.querySelectorAll('.message');
+   const dateLabels = chat_section.querySelectorAll('.date-tag');
+   prevMessages.forEach(element => element.parentElement.removeChild(element));
+   dateLabels.forEach(element => element.parentElement.removeChild(element));
 
-  for (let day of messages) {
-    chat_section.append(day.date_label)
-    for (let msg of day) {
-      chat_section.append(msg.element);
-      msg.element.addEventListener('click', toggleControls);
-    }
-  }
+   for (let day of messages) {
+      chat_section.append(day.date_label)
+      for (let msg of day) {
+         chat_section.append(msg.element);
+         msg.element.addEventListener('click', toggleControls);
+      }
+   }
 
 }
 
 function createDateLabel(date) {
-  const date_label = document.createElement('p');
-  const today = new Date();
-  date_label.classList.add('date-tag');
+   const date_label = document.createElement('p');
+   const today = new Date();
+   date_label.classList.add('date-tag');
 
-  if (getDateString(date) === getDateString(today)) {
-    date_label.innerText = 'Today';
-    return date_label;
-  }
+   if (getDateString(date) === getDateString(today)) {
+      date_label.innerText = 'Today';
+      return date_label;
+   }
 
-  const yersterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+   const yersterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
 
-  if (getDateString(date) === getDateString(yersterday)) {
-    date_label.innerText = 'Yesterday';
-    return date_label;
-  }
+   if (getDateString(date) === getDateString(yersterday)) {
+      date_label.innerText = 'Yesterday';
+      return date_label;
+   }
 
-  const month = date.toLocaleString('default', { month: 'long' });
-  date_label.innerText = `${month} ${date.getDate()}, ${date.getFullYear()}`;
-  return date_label;
+   const month = date.toLocaleString('default', { month: 'long' });
+   date_label.innerText = `${month} ${date.getDate()}, ${date.getFullYear()}`;
+   return date_label;
 }
 
 /******************** */
@@ -254,231 +291,231 @@ function createDateLabel(date) {
 /******************** */
 
 sys_battery_input.addEventListener('input', () => {
-  sys_battery.textContent = sys_battery_input.value <= 100 ?
-    sys_battery_input.value + '%' : 100 + '%';
+   sys_battery.textContent = sys_battery_input.value <= 100 ?
+      sys_battery_input.value + '%' : 100 + '%';
 
-  if (sys_battery_input.value === "")
-    sys_battery.textContent = sys_battery_input.placeholder + '%';
+   if (sys_battery_input.value === "")
+      sys_battery.textContent = sys_battery_input.placeholder + '%';
 })
 
 msg_form.addEventListener('submit', function createMessage(e) {
-  e.preventDefault();
-  const txt = msg_txt_input.value;
+   e.preventDefault();
+   const txt = msg_txt_input.value;
 
-  if (txt.trim() === "")
-    return;
+   if (txt.trim() === "")
+      return;
 
-  const msgDateTime = new Date();
+   const msgDateTime = new Date();
 
 
-  const source = source_input.value
-  const date = msg_date_input.value;
-  const time = msg_time_input.value;
+   const source = source_input.value
+   const date = msg_date_input.value;
+   const time = msg_time_input.value;
 
-  if (date !== "") {
-    msgDateTime.setFullYear(date.slice(0, 4));
-    msgDateTime.setMonth(Number(date.slice(5, 7)) - 1);
-    msgDateTime.setDate(date.slice(8, 10));
-  }
+   if (date !== "") {
+      msgDateTime.setFullYear(date.slice(0, 4));
+      msgDateTime.setMonth(Number(date.slice(5, 7)) - 1);
+      msgDateTime.setDate(date.slice(8, 10));
+   }
 
-  if (time !== "") {
-    msgDateTime.setHours(time.slice(0, 2));
-    msgDateTime.setMinutes(time.slice(3, 5));
-    msgDateTime.setSeconds(0);
-    msgDateTime.setMilliseconds(0);
-  }
+   if (time !== "") {
+      msgDateTime.setHours(time.slice(0, 2));
+      msgDateTime.setMinutes(time.slice(3, 5));
+      msgDateTime.setSeconds(0);
+      msgDateTime.setMilliseconds(0);
+   }
 
-  if (current_editing_message) {
-    current_editing_message.source = source;
-    current_editing_message.text = txt;
-    current_editing_message.element = setUpMessage(current_editing_message);
+   if (current_editing_message) {
+      current_editing_message.source = source;
+      current_editing_message.text = txt;
+      current_editing_message.element = setUpMessage(current_editing_message);
 
-    current_editing_message = undefined;
-    add_msg_button.textContent = "Add Message";
-    msg_txt_input.value = "";
-    msg_date_input.disabled = msg_time_input.disabled = false;
-    readMessages();
-    return;
-  }
+      current_editing_message = undefined;
+      add_msg_button.textContent = "Add Message";
+      msg_txt_input.value = "";
+      msg_date_input.disabled = msg_time_input.disabled = false;
+      readMessages();
+      return;
+   }
 
-  insertMessage(new Message(source, txt, msgDateTime));
-  readMessages();
+   insertMessage(new Message(source, txt, msgDateTime));
+   readMessages();
 
-  msg_txt_input.value = "";
+   msg_txt_input.value = "";
 });
 
 
 // Form color considering source 
 source_input.addEventListener('change', () => {
-  (function (elements) {
-    for (el of elements) {
-      if (source_input.value === 'receiver') {
-        el.classList.add('receiver');
-        el.classList.remove('self');
+   (function (elements) {
+      for (el of elements) {
+         if (source_input.value === 'receiver') {
+            el.classList.add('receiver');
+            el.classList.remove('self');
+         }
+         else {
+            el.classList.add('self');
+            el.classList.remove('receiver');
+         }
       }
-      else {
-        el.classList.add('self');
-        el.classList.remove('receiver');
-      }
-    }
-  })(msg_form.querySelectorAll('.self, .receiver'));
+   })(msg_form.querySelectorAll('.self, .receiver'));
 });
 
 // input on system time
 sys_time_input.addEventListener('input', function () {
-  sys_time.textContent = this.value;
-  if (this.value === "")
-    sys_time.textContent = getTimeString(new Date());
+   sys_time.textContent = this.value;
+   if (this.value === "")
+      sys_time.textContent = getTimeString(new Date());
 });
 
 // profile picture input
 photo_input.addEventListener('input', function () {
-  const img_url = URL.createObjectURL(this.files[0]);
-  img_profile[0].style['background-image'] = `url(${img_url})`;
-  img_profile[1].style['background-image'] = `url(${img_url})`;
+   const img_url = URL.createObjectURL(this.files[0]);
+   img_profile[0].style['background-image'] = `url(${img_url})`;
+   img_profile[1].style['background-image'] = `url(${img_url})`;
 });
 
 // Receiver's name input
 name_input.addEventListener('input', function () {
-  const option = document.querySelector('.source-select option[value=receiver]');
-  receiver_name.textContent = option.innerText = this.value;
-  if (this.value === "")
-    receiver_name.textContent = option.innerText = this.placeholder;
+   const option = document.querySelector('.source-select option[value=receiver]');
+   receiver_name.textContent = option.innerText = this.value;
+   if (this.value === "")
+      receiver_name.textContent = option.innerText = this.placeholder;
 });
 
 // Receiver's status input
 status_input.addEventListener('input', function () {
-  receiver_status.textContent = this.value;
-  if (this.value === "")
-    receiver_status.textContent = this.placeholder;
+   receiver_status.textContent = this.value;
+   if (this.value === "")
+      receiver_status.textContent = this.placeholder;
 });
 
 function getTimeString(date, format = 12) {
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let AM = false;
+   let hours = date.getHours();
+   let minutes = date.getMinutes();
+   let AM = false;
 
-  if (format === 12) {
+   if (format === 12) {
 
-    if (hours >= 0 && hours <= 11)
-      AM = true;
+      if (hours >= 0 && hours <= 11)
+         AM = true;
 
 
-    if (hours === 0)
-      hours = 12;
+      if (hours === 0)
+         hours = 12;
 
-    if (hours > 12)
-      hours %= 12;
-  }
+      if (hours > 12)
+         hours %= 12;
+   }
 
-  if (hours < 10)
-    hours = "0" + hours;
-  if (minutes < 10)
-    minutes = "0" + minutes;
+   if (hours < 10)
+      hours = "0" + hours;
+   if (minutes < 10)
+      minutes = "0" + minutes;
 
-  if (format === 12)
-    return `${hours}:${minutes} ${AM ? 'AM' : 'PM'}`;
-  return `${hours}:${minutes}`;
+   if (format === 12)
+      return `${hours}:${minutes} ${AM ? 'AM' : 'PM'}`;
+   return `${hours}:${minutes}`;
 }
 
 function getDateString(date) {
-  let year = date.getFullYear();
-  let month = date.getMonth() + 1; // return a number between 0-11
-  let day = date.getDate();
+   let year = date.getFullYear();
+   let month = date.getMonth() + 1; // return a number between 0-11
+   let day = date.getDate();
 
-  if (month < 10)
-    month = '0' + month;
+   if (month < 10)
+      month = '0' + month;
 
-  if (day < 10)
-    day = '0' + day;
+   if (day < 10)
+      day = '0' + day;
 
-  return `${year}-${month}-${day}`;
+   return `${year}-${month}-${day}`;
 }
 
 
 function setup() {
-  // times
-  const currentDateTime = new Date();
-  sys_time.textContent = getTimeString(currentDateTime);
+   // times
+   const currentDateTime = new Date();
+   sys_time.textContent = getTimeString(currentDateTime);
 
-  // batery level 
-  sys_battery.textContent = sys_battery_input.value + '%';
-  if (sys_battery_input.value === "")
-    sys_battery.textContent = sys_battery_input.placeholder + '%';
+   // batery level 
+   sys_battery.textContent = sys_battery_input.value + '%';
+   if (sys_battery_input.value === "")
+      sys_battery.textContent = sys_battery_input.placeholder + '%';
 
-  // receiver info
-  receiver_name.textContent = name_input.value;
-  receiver_status.textContent = status_input.value;
+   // receiver info
+   receiver_name.textContent = name_input.value;
+   receiver_status.textContent = status_input.value;
 
-  if (name_input.value === "")
-    receiver_name.textContent = name_input.placeholder;
+   if (name_input.value === "")
+      receiver_name.textContent = name_input.placeholder;
 
-  if (status_input.value === "")
-    receiver_status.textContent = status_input.placeholder;
+   if (status_input.value === "")
+      receiver_status.textContent = status_input.placeholder;
 
-  // default profile picture
-  const img_url = './default-profile.png';
-  img_profile[0].style['background-image'] = `url(${img_url})`;
-  img_profile[1].style['background-image'] = `url(${img_url})`;
+   // default profile picture
+   const img_url = './default-profile.png';
+   img_profile[0].style['background-image'] = `url(${img_url})`;
+   img_profile[1].style['background-image'] = `url(${img_url})`;
 
-  // source selector
-  source_input.value = "self";
-  const option = document.querySelector('.source-select option[value=receiver]');
-  option.innerText = receiver_name.textContent;
+   // source selector
+   source_input.value = "self";
+   const option = document.querySelector('.source-select option[value=receiver]');
+   option.innerText = receiver_name.textContent;
 }
 
 function toggleControls(e) {
 
-  const element = e.currentTarget;
-  const controls = element.querySelector('.controls');
+   const element = e.currentTarget;
+   const controls = element.querySelector('.controls');
 
-  controls.classList.toggle('active');
-  element.classList.toggle('selected');
+   controls.classList.toggle('active');
+   element.classList.toggle('selected');
 }
 
 
 
 
 function getMessageByElement(element) {
-  const date_index = messages
-    .findIndex(day => {
-      console.log(day)
-      if (getDateString(day.date) === element.dataset.date)
-        return true;
-    });
+   const date_index = messages
+      .findIndex(day => {
+         console.log(day)
+         if (getDateString(day.date) === element.dataset.date)
+            return true;
+      });
 
-  const message_index = messages[date_index].findIndex(msg => element.id == msg.id);
+   const message_index = messages[date_index].findIndex(msg => element.id == msg.id);
 
-  return {
-    message: messages[date_index][message_index],
-    messageIndex: message_index,
-    dateIndex: date_index
-  };
+   return {
+      message: messages[date_index][message_index],
+      messageIndex: message_index,
+      dateIndex: date_index
+   };
 }
 
 function editMessage(msg) {
-  source_input.value = msg.source;
-  source_input.dispatchEvent(new Event('change'));
-  msg_date_input.value = getDateString(msg.date_time);
-  msg_time_input.value = getTimeString(msg.date_time, 24);
-  msg_txt_input.value = msg.text;
-  msg_date_input.disabled = msg_time_input.disabled = true;
-  add_msg_button.textContent = "Save changes"
-  current_editing_message = msg;
+   source_input.value = msg.source;
+   source_input.dispatchEvent(new Event('change'));
+   msg_date_input.value = getDateString(msg.date_time);
+   msg_time_input.value = getTimeString(msg.date_time, 24);
+   msg_txt_input.value = msg.text;
+   msg_date_input.disabled = msg_time_input.disabled = true;
+   add_msg_button.textContent = "Save changes"
+   current_editing_message = msg;
 }
 
 function deleteMessage(message) {
-  // remove the msg object
-  const date = messages.findIndex(day => {
-    if (getDateString(day.date) === getDateString(message.date_time))
-      return true;
-  });
+   // remove the msg object
+   const date = messages.findIndex(day => {
+      if (getDateString(day.date) === getDateString(message.date_time))
+         return true;
+   });
 
-  messages[date].splice(messages[date]
-    .findIndex(msg => msg.id === message.id), 1);
+   messages[date].splice(messages[date]
+      .findIndex(msg => msg.id === message.id), 1);
 
-  // Remove the entire day if empty
-  if (messages[date].length === 0)
-    messages.splice(date, 1)
+   // Remove the entire day if empty
+   if (messages[date].length === 0)
+      messages.splice(date, 1)
 }
 
