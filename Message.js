@@ -1,11 +1,10 @@
 import { getTimeString, getDateString } from "./common.js";
 
 const source_input = document.querySelector('.source-select');
-const name_input = document.querySelector('#receiver-input-name');
-const status_input = document.querySelector('#receiver-input-status');
 const msg_txt_input = document.querySelector('.msg-text-input');
 const msg_date_input = document.querySelector('#message-date');
 const msg_time_input = document.querySelector('#message-time');
+const add_msg_button = document.querySelector('.add-message-button');
 const idGenerator = getNewID();
 
 export default class Message {
@@ -17,6 +16,8 @@ export default class Message {
         this.date_time = date_time;
         this.element = document.createElement('div');
         this.controls = document.createElement('div');
+        this.textarea = document.createElement('p');
+
         this.setup()
     }
 
@@ -25,19 +26,19 @@ export default class Message {
         this.element.classList.toggle('selected');
     }
 
-    editMessage() {
-        source_input.value = msg.source;
+    edit() {
+
+        source_input.value = this.source;
         source_input.dispatchEvent(new Event('change'));
-        msg_date_input.value = getDateString(msg.date_time);
-        msg_time_input.value = getTimeString(msg.date_time, 24);
-        msg_txt_input.value = msg.text;
+        msg_date_input.value = getDateString(this.date_time);
+        msg_time_input.value = getTimeString(this.date_time, 24);
+        msg_txt_input.value = this.text;
         msg_date_input.disabled = msg_time_input.disabled = true;
         add_msg_button.textContent = "Save changes"
-        current_editing_message = msg;
+        this.chat.current_editing_message = this;
     }
 
     delete() {
-
         // Find the day of this message
         const day_index = this.chat.days.findIndex(day => {
             return getDateString(day.date) === getDateString(this.date_time)
@@ -47,7 +48,6 @@ export default class Message {
         const msg_index = this.chat.days[day_index].messages.findIndex(msg => {
             return msg.id === this.id
         });
-
         this.chat.days[day_index].messages.splice(msg_index, 1);
 
         // Delete the day if empty
@@ -55,7 +55,15 @@ export default class Message {
             this.chat.days.splice(day_index, 1);
         
         this.chat.readMessages();
+    }
 
+    update(text, source) {
+        const time_send = this.element.querySelector('.data-time');
+        this.textarea.textContent = this.text = text;
+        this.source = source;
+        this.textarea.appendChild(time_send);
+        this.element.classList.remove('message-self', 'message-receiver');
+        this.element.classList.add(`message-${source}`);
     }
 
     setup() {
@@ -95,10 +103,9 @@ export default class Message {
         });
 
         // message text
-        const msg_text = document.createElement('p');
-        msg_text.classList.add('message-text');
+        this.textarea.classList.add('message-text');
         // msg_text.setAttribute('contenteditable', 'true');
-        msg_text.textContent = this.text;
+        this.textarea.textContent = this.text;
 
         // time of send
         const time = document.createElement('span');
@@ -117,9 +124,9 @@ export default class Message {
         this.controls.appendChild(delete_btn);
         edit_btn.appendChild(edit_icon);
         delete_btn.appendChild(delete_icon);
-        msg_text.appendChild(time);
+        this.textarea.appendChild(time);
         time.appendChild(check_icon);
-        this.element.appendChild(msg_text);
+        this.element.appendChild(this.textarea);
 
         this.element.addEventListener('click', () => this.toggleControls.call(this));
         this.element.addEventListener('blur', () => {

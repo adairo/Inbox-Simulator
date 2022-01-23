@@ -33,7 +33,7 @@ export default class Chat {
       while (day_index < this.days.length &&
          newMessage.date_time.getTime() >=
          this.days[day_index].date.getTime()) {
-         index++;
+         day_index++;
       }
 
       this.days.splice(day_index, 0, new Day(newMessage));

@@ -21,7 +21,6 @@ const receiver_status = document.querySelector('.receiver-status');
 const sys_time = document.querySelector('.clock.notification-icon');
 const sys_battery = document.querySelector('.percentaje.notification-icon');
 
-let current_editing_message;
 const messages = [];
 
 setup();
@@ -48,12 +47,22 @@ msg_form.addEventListener('submit', function createMessage(e) {
    if (txt.trim() === "")
       return;
 
-   const msgDateTime = new Date();
-
-
    const source = source_input.value
    const date = msg_date_input.value;
    const time = msg_time_input.value;
+
+   if (chat.current_editing_message) {
+      chat.current_editing_message.update(txt, source)
+      chat.current_editing_message = undefined;
+      
+      add_msg_button.textContent = "Add Message";
+      msg_txt_input.value = "";
+      msg_date_input.disabled = msg_time_input.disabled = false;
+      chat.readMessages();
+      return;
+   }
+
+   const msgDateTime = new Date();
 
    if (date !== "") {
       msgDateTime.setFullYear(date.slice(0, 4));
@@ -68,19 +77,6 @@ msg_form.addEventListener('submit', function createMessage(e) {
       msgDateTime.setMilliseconds(0);
    }
 
-   if (current_editing_message) {
-      current_editing_message.source = source;
-      current_editing_message.text = txt;
-      current_editing_message.element = setUpMessage(current_editing_message);
-
-      current_editing_message = undefined;
-      add_msg_button.textContent = "Add Message";
-      msg_txt_input.value = "";
-      msg_date_input.disabled = msg_time_input.disabled = false;
-      readMessages();
-      return;
-   }
-
    chat.insertMessage(new Message(chat, source, txt, msgDateTime))
    chat.readMessages();
 
@@ -91,7 +87,7 @@ msg_form.addEventListener('submit', function createMessage(e) {
 // Form color considering source 
 source_input.addEventListener('change', () => {
    (function (elements) {
-      for (el of elements) {
+      for (let el of elements) {
          if (source_input.value === 'receiver') {
             el.classList.add('receiver');
             el.classList.remove('self');
@@ -140,11 +136,11 @@ function setup() {
    sys_time.textContent = getTimeString(currentDateTime);
 
    // batery level 
-   
+
    sys_battery.textContent = sys_battery_input.placeholder + '%';
 
    // receiver info
-   
+
    receiver_name.textContent = name_input.placeholder;
 
    receiver_status.textContent = status_input.placeholder;
