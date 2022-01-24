@@ -1,32 +1,30 @@
 import Chat from "./Chat.js"
 import Message from "./Message.js"
-import { getDateString, getTimeString } from "./common.js";
+import {getTimeString } from "./common.js";
 
-const chat_section = document.querySelector('.chat-section');
-const img_profile = document.querySelectorAll('.receiver-photo-profile');
-const msg_form = document.querySelector('.message-form');
-const source_input = document.querySelector('.source-select');
-const msg_txt_input = document.querySelector('.msg-text-input');
-const add_msg_button = document.querySelector('.add-message-button');
-const sys_time_input = document.querySelector('#sys-time');
-const sys_battery_input = document.querySelector('#battery-percentaje-input');
-const photo_input = document.querySelector('#receiver-input-photo');
-const name_input = document.querySelector('#receiver-input-name');
-const status_input = document.querySelector('#receiver-input-status');
-const msg_date_input = document.querySelector('#message-date');
-const msg_time_input = document.querySelector('#message-time');
-
+// whatsapp interface
 const receiver_name = document.querySelector('.receiver-name');
 const receiver_status = document.querySelector('.receiver-status');
 const sys_time = document.querySelector('.clock.notification-icon');
 const sys_battery = document.querySelector('.percentaje.notification-icon');
+const img_profile = document.querySelectorAll('.receiver-photo-profile');
 
-const messages = [];
+// App forms
+const sys_time_input = document.querySelector('#sys-time');
+const sys_battery_input = document.querySelector('#battery-percentaje-input');//
+const photo_input = document.querySelector('#receiver-input-photo');
+const name_input = document.querySelector('#receiver-input-name');
+const status_input = document.querySelector('#receiver-input-status');
+const msg_form = document.querySelector('.message-form');//
+const source_input = document.querySelector('.source-select');
+const msg_date_input = document.querySelector('#message-date');
+const msg_time_input = document.querySelector('#message-time');
+const msg_txt_input = document.querySelector('.msg-text-input');
+const add_msg_button = document.querySelector('.add-message-button');
 
 setup();
 const chat = new Chat('default');
 chat.readMessages();
-
 
 /******************** */
 /* Event listeners */
@@ -85,6 +83,7 @@ msg_form.addEventListener('submit', function createMessage(e) {
 
 
 // Form color considering source 
+// Probably this function needs a refactor
 source_input.addEventListener('change', () => {
    (function (elements) {
       for (let el of elements) {
@@ -129,20 +128,16 @@ status_input.addEventListener('input', function () {
       receiver_status.textContent = this.placeholder;
 });
 
-
 function setup() {
    // times
    const currentDateTime = new Date();
-   sys_time.textContent = getTimeString(currentDateTime);
+   sys_time.textContent = getTimeString(currentDateTime, 12);
 
    // batery level 
-
    sys_battery.textContent = sys_battery_input.placeholder + '%';
 
    // receiver info
-
    receiver_name.textContent = name_input.placeholder;
-
    receiver_status.textContent = status_input.placeholder;
 
    // default profile picture
@@ -155,21 +150,3 @@ function setup() {
    const option = document.querySelector('.source-select option[value=receiver]');
    option.innerText = name_input.placeholder;
 }
-
-// function getMessageByElement(element) {
-//    const date_index = messages
-//       .findIndex(day => {
-//          console.log(day)
-//          if (getDateString(day.date) === element.dataset.date)
-//             return true;
-//       });
-
-//    const message_index = messages[date_index].findIndex(msg => element.id == msg.id);
-
-//    return {
-//       message: messages[date_index][message_index],
-//       messageIndex: message_index,
-//       dateIndex: date_index
-//    };
-// }
-
