@@ -19,163 +19,134 @@
 </head>
 
 <body>
-  <div class="screen-container">
+  <header class="app-header shadow">
+    <h1 class="app-name"><span class="inbox-word">Whatsapp</span> simulator</h1>
+    <a href="mailto:adair.reyes450@gmail.com" class="contact">contact</a>
+  </header>
 
-    <div class="notification-bar">
-      <div class="notification-icon-group">
-        <span class="clock notification-icon">7:50</span>
-      </div>
+  <main>
+    <div class="screen-container">
+      <div class="notification-bar">
+        <div class="notification-icon-group">
+          <span class="clock notification-icon">7:50</span>
+        </div>
 
-      <div class="notification-icon-group">
-        <span class="material-icons notification-icon">alarm</span>
-        <span class="material-icons notification-icon">signal_wifi_4_bar</span>
-        <span class="material-icons notification-icon">signal_cellular_4_bar</span>
-        <span class="material-icons notification-icon">battery_full</span>
-        <span class="notification-icon percentaje">45%</span>
-        <!-- <span class="notification-icon">75%</span> -->
-      </div>
-    </div>
-
-    <div class="application-header">
-
-      <div class="header-group">
-        <img src="resources/icons/arrow_back_white_24dp.svg" class='back-button'>
-        <div class="receiver-photo-profile" src="default-profile.png"></div>
-        <div class="receiver-info">
-          <span class="receiver-name">Person 1 </span>
-          <span class="receiver-status">status</span>
+        <div class="notification-icon-group">
+          <span class="material-icons notification-icon">alarm</span>
+          <span class="material-icons notification-icon">signal_wifi_4_bar</span>
+          <span class="material-icons notification-icon">signal_cellular_4_bar</span>
+          <span class="material-icons notification-icon">battery_full</span>
+          <span class="notification-icon percentaje">45%</span>
+          <!-- <span class="notification-icon">75%</span> -->
         </div>
       </div>
 
-      <div class="header-group">
-        <img src="resources/icons/videocam_white_24dp.svg" class='icon-option' alt="">
-        <!-- <span class="material-icons header-icon">videocam</span> -->
-        <img src="resources/icons/call_white_24dp.svg" class='icon-option' alt="">
-        <img src="resources/icons/more_vert_white_24dp.svg" class='icon-option' alt="">
-      </div>
-    </div>
+      <div class="application-header">
 
-
-    <div class="chat-section">
-      <p class="security-info shadow"><span class="material-icons lock-icon">lock</span>Messages and calls are
-        end-to-end encrypted. No one
-        outside of this chat, not even Whatsapp, can read or listen to them. Tap to learn more.
-      </p>
-      <!-- <p class="date">11/12/21</p> -->
-
-
-      <!-- <div class="message message-receiver" tabindex="0">
-        <div class="controls">
-          <button class="message-control edit-control">
-            <span class="material-icons">edit</span>
-          </button>
-
-          <button class="message-control delete-control">
-            <span class="material-icons">clear</span>
-          </button>
+        <div class="header-group">
+          <img src="resources/icons/arrow_back_white_24dp.svg" class='back-button'>
+          <div class="receiver-photo-profile" src="default-profile.png"></div>
+          <div class="receiver-info">
+            <span class="receiver-name">Person 1 </span>
+            <span class="receiver-status">status</span>
+          </div>
         </div>
-        <p class="message-text">Hi how are u? </p>
 
-        <span class="data-time">6:04 AM</span>
-      </div> -->
-
-    </div>
-
-    <div class="bottom-app-section">
-      <div class="message-bar shadow">
-        <img src="resources/icons/emoji_emotions_white_24dp.svg" class="message-bar-icon">
-
-
-        <!-- <input type="text" class="message-input" placeholder='Message'> -->
-        <textarea name="" class="message-input" placeholder="Message" rows="1" cols="15"></textarea>
-        <img src="resources/icons/attach_file_white_24dp.svg" class="message-bar-icon">
-        <img src="resources/icons/photo_camera_white_24dp.svg" class="message-bar-icon">
+        <div class="header-group">
+          <img src="resources/icons/videocam_white_24dp.svg" class='icon-option' alt="">
+          <!-- <span class="material-icons header-icon">videocam</span> -->
+          <img src="resources/icons/call_white_24dp.svg" class='icon-option' alt="">
+          <img src="resources/icons/more_vert_white_24dp.svg" class='icon-option' alt="">
+        </div>
       </div>
-      <button class="record-audio-button">
-        <img src="/resources/icons/mic_white_24dp.svg" class='icon'>
-      </button>
-    </div>
 
 
-    <!-- depends on the interface and android version -->
-    <div class="navigation-bar">
-      <div class="nav-button"></div>
-    </div>
-
-  </div>
-
-
-
-  <div class="application-controls">
-
-    <div class="form receiver-form">
-      <p class='form-legend'>System settings</p>
-      <div class="form-group space-between">
-        <label for="sys-time">Time
-          <input type="time" name="" id="sys-time" class='input-form'>
-        </label>
-
-        <label for="battery-percentaje-input">Battery level
-          <input type="number" min="1" max="100" id="battery-percentaje-input" class='input-form' placeholder="45"> %
-        </label>
+      <div class="chat-section">
+        <p class="security-info shadow"><span class="material-icons lock-icon">lock</span>Messages and calls are
+          end-to-end encrypted. No one
+          outside of this chat, not even Whatsapp, can read or listen to them. Tap to learn more.
+        </p>
 
       </div>
-      <p class='form-legend'>Receiver settings</p>
 
-      <div class="form-group receiver-form-info">
-        <label for="receiver-input-photo" class='receiver-photo-profile photo-input'><span
-            class="material-icons layer-photo">add_a_photo</span></label>
-        <input type="file" accept="image/*" name="" id="receiver-input-photo">
-        <div class="status-group">
-          <label for="receiver-input-name">Name
-            <input type="text" name="" id="receiver-input-name" class="receiver-form-name input-form"
-              placeholder="Receiver's name" value="">
+      <div class="bottom-app-section">
+        <div class="message-bar shadow">
+          <img src="resources/icons/emoji_emotions_white_24dp.svg" class="message-bar-icon">
+
+          <textarea name="" class="message-input" placeholder="Message" rows="1" cols="15"></textarea>
+          <img src="resources/icons/attach_file_white_24dp.svg" class="message-bar-icon">
+          <img src="resources/icons/photo_camera_white_24dp.svg" class="message-bar-icon">
+        </div>
+        <button class="record-audio-button">
+          <img src="/resources/icons/mic_white_24dp.svg" class='icon'>
+        </button>
+      </div>
+
+      <div class="navigation-bar">
+        <div class="nav-button"></div>
+      </div>
+
+    </div>
+
+    <div class="application-controls">
+      <div class="form receiver-form">
+
+        <p class='form-legend'>System settings</p>
+        <div class="form-group space-between">
+          <label for="sys-time">Time
+            <input type="time" name="" id="sys-time" class='input-form'>
           </label>
-          <label for="receiver-input-status">Status
-            <input type="text" name="" id="receiver-input-status" class="receiver-form-status input-form"
-              placeholder="Receiver's status" value="">
+          <label for="battery-percentaje-input">Battery level
+            <input type="number" min="1" max="100" id="battery-percentaje-input" class='input-form' placeholder="45"> %
           </label>
         </div>
+
+        <p class='form-legend'>Receiver settings</p>
+        <div class="form-group receiver-form-info">
+          <label for="receiver-input-photo" class='receiver-photo-profile photo-input'><span
+              class="material-icons layer-photo">add_a_photo</span></label>
+          <input type="file" accept="image/*" name="" id="receiver-input-photo">
+          <div class="status-group">
+            <label for="receiver-input-name">Name
+              <input type="text" name="" id="receiver-input-name" class="receiver-form-name input-form"
+                placeholder="Receiver's name" value="">
+            </label>
+            <label for="receiver-input-status">Status
+              <input type="text" name="" id="receiver-input-status" class="receiver-form-status input-form"
+                placeholder="Receiver's status" value="">
+            </label>
+          </div>
+        </div>
       </div>
 
+      <form action="/" class="form message-form self">
+
+        <p class='form-legend'>Create new message</p>
+        <div class="form-group space-between">
+          <label for="self-option">From
+            <select name="source" class='input-form source-select self'>
+              <option value="self">Me</option>
+              <option value="receiver">Person</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-group space-between">
+          <label for="message-time">Date
+            <input type="date" id="message-date" class='input-form self'>
+          </label>
+          <label for="message-time">Time
+            <input type="time" name="" id="message-time" class='input-form self'>
+          </label>
+        </div>
+        <div class="form-group">
+          <textarea name="" id="msg_input" cols="20" rows="3" class='msg-text-input self'
+            placeholder="Message..."></textarea>
+          <button type="submit" class='add-message-button self'>Add message</button>
+          </a>
+        </div>
+      </form>
     </div>
-
-
-    <form action="/" class="form message-form self">
-      <p class='form-legend'>Create new message</p>
-
-      <div class="form-group space-between">
-        <label for="self-option">From
-          <select name="source" class='input-form source-select self'>
-            <option value="self">Me</option>
-            <option value="receiver">Person</option>
-          </select>
-        </label>
-      </div>
-
-      <div class="form-group space-between">
-
-        <label for="message-time">Date
-          <input type="date" id="message-date" class='input-form self'>
-        </label>
-
-        <label for="message-time">Time
-          <input type="time" name="" id="message-time" class='input-form self'>
-        </label>
-      </div>
-
-      <div class="form-group">
-        <textarea name="" id="msg_input" cols="20" rows="3" class='msg-text-input self'
-          placeholder="Message..."></textarea>
-        <button type="submit" class='add-message-button self'>Add message</button>
-        <!-- <a href="#" class='more-options self'>See more options -->
-        <!-- <span class="material-icons self">navigate_next</span> -->
-        </a>
-      </div>
-
-    </form>
-  </div>
-
+  </main>
 </body>
 
 </html>
