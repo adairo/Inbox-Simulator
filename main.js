@@ -32,7 +32,7 @@ chat.readMessages();
 
 sys_battery_input.addEventListener('input', () => {
    sys_battery.textContent = sys_battery_input.value <= 100 ?
-      sys_battery_input.value + '%' : 100 + '%';
+      sys_battery_input.value + '%' : '100%';
 
    if (sys_battery_input.value === "")
       sys_battery.textContent = sys_battery_input.placeholder + '%';

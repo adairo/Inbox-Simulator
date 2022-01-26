@@ -27,8 +27,6 @@ export default class Message {
     }
 
     edit() {
-
-        source_input.value = this.source;
         source_input.dispatchEvent(new Event('change'));
         msg_date_input.value = getDateString(this.date_time);
         msg_time_input.value = getTimeString(this.date_time, 24);
