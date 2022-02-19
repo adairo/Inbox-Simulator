@@ -43,10 +43,15 @@
 .form-group.vertical {
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     gap: 0.5em;
     width: 100%;
-  }
+}
+
+.form-group.vertical.center {
+    align-items: center;
+
+}
+
 
 .form-group > label {
   display: flex;
