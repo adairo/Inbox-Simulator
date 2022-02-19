@@ -101,7 +101,8 @@ source_input.addEventListener('change', () => {
 
 // input on system time
 sys_time_input.addEventListener('input', function () {
-   sys_time.textContent = this.value;
+   const date = new Date(this.value.slice(0, 2), this.value.slice(3, 5))
+   sys_time.textContent = getTimeString(date, 12);
    if (this.value === "")
       sys_time.textContent = getTimeString(new Date());
 });

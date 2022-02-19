@@ -79,6 +79,7 @@ export default class Message {
         const edit_btn = document.createElement('button');
         edit_btn.classList.add('message-control', 'edit-control');
         edit_btn.addEventListener('click', () => {
+            msg_txt_input.focus();
             this.edit();
             // readMessages();
         });

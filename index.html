@@ -89,40 +89,41 @@
     </div>
 
     <div class="application-controls">
-      <div class="form receiver-form">
+      <div class="form">
 
         <p class='form-legend'>System settings</p>
-        <div class="form-group space-between">
+        <div class="form-group horizontal">
           <label for="sys-time">Time
             <input type="time" name="" id="sys-time" class='input-form'>
           </label>
           <label for="battery-percentaje-input">Battery
-            <input type="number" min="1" max="100" id="battery-percentaje-input" class='input-form' placeholder="45"> %
+            <input type="number" min="1" max="100" id="battery-percentaje-input" class='input-form' placeholder="45">
           </label>
         </div>
 
         <p class='form-legend'>Receiver settings</p>
-        <div class="form-group receiver-form-info">
+        <div class="form-group vertical">
           <label for="receiver-input-photo" class='receiver-photo-profile photo-input'><span
               class="material-icons layer-photo">add_a_photo</span></label>
           <input type="file" accept="image/*" name="" id="receiver-input-photo">
-          <div class="status-group">
-            <label for="receiver-input-name">Name
-              <input type="text" name="" id="receiver-input-name" class="receiver-form-name input-form"
-                placeholder="Receiver's name" value="">
-            </label>
-            <label for="receiver-input-status">Status
-              <input type="text" name="" id="receiver-input-status" class="receiver-form-status input-form"
-                placeholder="Receiver's status" value="">
-            </label>
-          </div>
+          <label for="receiver-input-photo">Click to add a new photo</label>
+        </div>
+        <div class="form-group vertical">
+          <label for="receiver-input-name">Name
+            <input type="text" name="" id="receiver-input-name" class="input-form"
+              placeholder="Receiver's name" value="">
+          </label>
+          <label for="receiver-input-status">Status
+            <input type="text" name="" id="receiver-input-status" class="input-form"
+              placeholder="Receiver's status" value="">
+          </label>
         </div>
       </div>
 
       <form action="/" class="form message-form self">
 
         <p class='form-legend'>Create new message</p>
-        <div class="form-group space-between">
+        <div class="form-group horizontal">
           <label for="self-option">From
             <select name="source" class='input-form source-select self'>
               <option value="self">Me</option>
@@ -130,7 +131,7 @@
             </select>
           </label>
         </div>
-        <div class="form-group space-between">
+        <div class="form-group horizontal">
           <label for="message-time">Date
             <input type="date" id="message-date" class='input-form self'>
           </label>
